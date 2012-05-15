@@ -1,0 +1,10 @@
+* { list-style: none; padding: 0; margin: 0; font-family: helvetica, arial, sans-serif; box-sizing: border-box;}
+#timetracker { width: 300px; margin: 10% auto; }
+	#timetracker input { display: block; font-size: 12px;}
+	#timetracker input[type=text] { padding: 6px; margin: 0 0 15px; width: 100%; }
+	#timetracker fieldset { position: relative; border: 0; margin: 0;}
+	#suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 30px }
+		#suggestions li { padding: 7px; font-size: 12px; } 
+	.active { background: orange; color: #FFF; font-weight: bold;}
+	#timetracker #time { display: block; width: 100%; text-align: center; color: #BBB; font-family: Monaco, "courier new"; font-size: 110px;}
+	#timetracker #time.inactive { color: #EEE; }

@@ -65,16 +65,16 @@ $(function() {
 	});
 
 	$pause.on('click', function() {
+		timing = !timing;
 		if (timing) {
-			paused_time = new Date().getTime();
-			window.clearInterval(timer);
-			$time.addClass('paused');
-		} else {
 			start_time += (new Date().getTime() - paused_time);
 			$time.startTimer(start_time);
 			$time.removeClass('paused');
+		} else {
+			paused_time = new Date().getTime();
+			window.clearInterval(timer);
+			$time.addClass('paused');
 		}
-		timing = !timing;
 	});
 
 	$client.on({

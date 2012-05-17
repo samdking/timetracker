@@ -13,12 +13,12 @@
 		<form>
 			<span id="time" class="inactive">0:00</span>
 			<fieldset>
-				<input name="value" id="client" type="text">
+				<input name="value" autocomplete="off" id="client" type="text">
 				<div id="suggestions"></div>
 				<textarea id="comment"></textarea>
 				<input type="button" id="start" value="Start">
-				<input type="button" id="pause" value="Pause">
 				<input type="button" id="finish" value="Finish">
+				<input type="button" id="pause" value="Pause">
 				<input type="button" id="log" value="Log">
 			</fieldset>
 		</form>

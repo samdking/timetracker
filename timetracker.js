@@ -26,12 +26,20 @@ $(function() {
 	    $comment = $('#comment'),
 	    $time = $('#time');
 
+	$('#timetracker form').on('submit', function() {
+		return false;
+	})
+
 	$start.on('click', function() {
+		if (!$client.hasClass('valid')) {
+			$client.focus();
+			return false;
+		}
 		timing = true;
 		$pause.show();
 		$start.hide();
 		$finish.show();
-		$client.toggleClass('active').attr('disabled', true);
+		$client.addClass('active').attr('disabled', true);
 		$time.removeClass('inactive');
 		start_time = new Date().getTime();
 		$time.startTimer(start_time);
@@ -52,6 +60,8 @@ $(function() {
 		$comment.val('').hide();
 		$log.hide();
 		$start.show();
+		$client.removeClass('active').attr('disabled', false);
+		$time.removeClass('inactive');
 	});
 
 	$pause.on('click', function() {
@@ -67,21 +77,24 @@ $(function() {
 		timing = !timing;
 	});
 
-	$client
-		.on('keyup', function(e) {
-			//if (e.which < 65 || e.which > 91)
-			//	return false;
+	$client.on({
+		'focus': function() {
+			$(this).removeClass('valid');
+		},
+		'keyup': function(e) {
 			$.get('request.php?value=' + this.value, function(data) {
 				$suggestions.html(data).show();
 			});
-		})
-		.on('blur', function(e) {
-			if ($suggestions.find('li').length == 1) {
-				this.value = $suggestions.find('li').html();
-				$(this).addClass('valid');
-				$start.show();
-			}
-			$suggestions.hide();
-		});
-
+		},
+		'keydown blur': function(e) {
+			if (e.type == 'blur' || e.which == 9) {
+				if ($suggestions.find('li').length == 1) {
+					this.value = $suggestions.find('li').html();
+					$(this).addClass('valid');
+					$start.show();
+				} 
+				$suggestions.hide();
+			}	
+		}
+	});
 });

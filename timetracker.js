@@ -15,10 +15,6 @@ $.fn.startTimer = function(start_time) {
 	}, 1000);
 }
 
-function timeIt(start_time) {
-	
-}
-
 $(function() {
 	
 	var $suggestions = $('#suggestions'),

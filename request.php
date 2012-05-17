@@ -5,7 +5,7 @@ if (!$_GET['value'])
 
 $value = $_GET['value'];
 
-$clients = array('Bozboz', 'Levellers', 'Timothy Roe', 'Events House', 'Metalheadz', 'Quietmark');
+$clients = array('Bozboz', 'Levellers', 'Timothy Roe', 'Events House', 'Metalheadz', 'Quietmark', 'Toolroom', 'SSL');
 
 foreach($clients as $c)
 	if (preg_match('/' . $value . '/i', $c))

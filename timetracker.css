@@ -14,4 +14,4 @@
 		#timetracker #finish { float: left; }
 		#timetracker #pause { float: right; }
 		#timetracker #log { float: left; }
-		#timetracker #comment { display: none; font-size: 12px;}
+		#timetracker #comment { line-height: 16px; font-size: 14px; display: none; font-size: 12px;}

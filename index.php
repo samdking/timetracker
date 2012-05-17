@@ -15,7 +15,7 @@
 			<fieldset>
 				<input name="value" autocomplete="off" id="client" type="text">
 				<div id="suggestions"></div>
-				<textarea id="comment"></textarea>
+				<textarea id="comment" rows="3"></textarea>
 				<input type="button" id="start" value="Start">
 				<input type="button" id="finish" value="Finish">
 				<input type="button" id="pause" value="Pause">

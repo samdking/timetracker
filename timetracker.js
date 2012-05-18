@@ -28,10 +28,10 @@ $(function() {
 
 	$('#timetracker form').on('submit', function() {
 		return false;
-	})
+	});
 
 	$start.on('click', function() {
-		if (!$client.hasClass('valid')) {
+		if ($client.val() === '') {
 			$client.focus();
 			return false;
 		}
@@ -79,7 +79,7 @@ $(function() {
 
 	$client.on({
 		'focus': function() {
-			$(this).removeClass('valid');
+			$(this).removeClass('match');
 		},
 		'keyup': function(e) {
 			$.get('request.php?value=' + this.value, function(data) {
@@ -90,11 +90,11 @@ $(function() {
 			if (e.type == 'blur' || e.which == 9) {
 				if ($suggestions.find('li').length == 1) {
 					this.value = $suggestions.find('li').html();
-					$(this).addClass('valid');
+					$(this).addClass('match');
 					$start.show();
-				} 
+				}
 				$suggestions.hide();
-			}	
+			}
 		}
 	});
 });

@@ -4,7 +4,7 @@
 		#timetracker input { font-size: 12px; display: none;}
 		#timetracker #client,
 		#timetracker #comment { display: block; font-size: 18px; padding: 6px; margin: 0 0 15px; width: 100%; }
-		#timetracker input.valid { font-weight: bold}
+		#timetracker input.match { font-weight: bold}
 		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 30px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
 		#timetracker input.active { background: orange; color: #FFF; font-weight: bold;}

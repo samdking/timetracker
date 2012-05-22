@@ -2,7 +2,8 @@
 
 class Model
 {
-	private $properties;
+	protected $properties;
+	protected static $engine;
 
 	static function get($model)
 	{
@@ -11,9 +12,17 @@ class Model
 		return new $class_name;
 	}
 
+	function __call($method, $args)
+	{
+		$queryset = $this->query_set();
+		if (method_exists($queryset, $method))
+			return call_user_func_array(array($queryset, $method), $args);
+		return $this;
+	}
+
 	function __get($prop)
 	{
-		if (isset($properties[$prop]))
+		if (isset($this->properties[$prop]))
 			return $this->properties[$prop];
 	}
 
@@ -22,58 +31,43 @@ class Model
 		$this->properties[$prop] = $value;
 	}
 
+	function query_set()
+	{
+		return new Query_set(get_class($this));
+	}
+
+	static function engine()
+	{
+		$engine = Engine::get('mysql');
+		$engine->from(static::$db_table);
+		return $engine;
+	}
+
 	function populate($props)
 	{
 		$this->properties = $props;
 	}
 
-	function find($params = array())
-	{
-		foreach($params as $key=>$val) {
-			$val = is_string($val)? "'$val'" : $val;
-			$where[] = "`$key` = " . $val;
-		}
-		$rows = DB::init()->result(DB::init()->query('SELECT * FROM ' . static::$db_table . (isset($where)? ' WHERE ' . implode(', ', $where) : '')));
-		foreach($rows as $row) {
-			$obj = new $this;
-			$obj->populate($row);
-			$list[] = $obj;
-		}
-		return isset($list)? $list : array();
-	}
-
 	function save()
 	{
 		if ($this->id)
-			DB::init()->update($this->properties, array('id'=>$this->id));
+			$this->update();
 		else
-			DB::init()->insert($this->properties);
+			$this->create($this->properties);
 	}
 
-	function last()
+	function update()
 	{
-		return $this->one()->order('id DESC');
+		static::engine()->update($this->properties, array('id' => $this->id))->execute();
 	}
 
-	function first_or_create($params)
+	function create($props)
 	{
-		$obj = $this->find($params)->limit(1);
-		if (!$obj)
-			$obj = $this->create($params);
-		return $obj;
-	}
-
-	function create($params)
-	{
-		$params['created'] = new Now;
-		foreach($params as $key=>$val) {
-			$val = is_string($val)? "'$val'" : $val;
-			$where[] = "`$key` = " . $val;
-		}
-		DB::init()->query('INSERT INTO ' . static::$db_table . ' SET ' . implode(', ', $where));
-		$params['id'] = DB::init()->last_id();
+		//$params['created'] = new Now;
+		$params['id'] = static::engine()->insert($props)->execute()->last_id();
 		$obj = new $this;
-		$obj->populate($params);
+		$obj->populate($props);
 		return $obj;
 	}
+
 }

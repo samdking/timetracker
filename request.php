@@ -1,15 +1,39 @@
 <?php
 
-if (!$_GET['value'])
-	exit;
+include 'system/db.php';
+include 'system/query_set.php';
+include 'system/model.php';
+include 'system/config.php';
+include 'system/engines.php';
 
-$value = $_GET['value'];
+$gets = array('action', 'client', 'query');
+foreach($gets as $get)
+	$$get = isset($_GET[$get])? $_GET[$get] : NULL;
 
-$clients = array('Bozboz', 'Levellers', 'Timothy Roe', 'Events House', 'Metalheadz', 'Quietmark', 'Toolroom', 'SSL');
+if ($query) {
 
-foreach($clients as $c)
-	if (preg_match('/' . $value . '/i', $c))
-		$matches[] = $c;
+	$clients = array('Bozboz', 'Levellers', 'Timothy Roe', 'Events House', 'Metalheadz', 'Quietmark', 'Toolroom', 'SSL');
 
-if (isset($matches))
-	echo '<ul><li>' . implode('</li><li>', $matches) . '</li></ul>';
+	foreach($clients as $c)
+		if (preg_match('/' . $query . '/i', $c))
+			$matches[] = $c;
+
+	if (isset($matches))
+		echo '<ul><li>' . implode('</li><li>', $matches) . '</li></ul>';
+
+} elseif ($action == 'start') {
+
+	$client = Model::get('client')->first_or_create(array('name'=>$client));
+	$client->start_timing();
+
+} elseif ($action == 'pause') {
+
+	$time = Model::get('time')->last();
+	$time->pause();
+
+} elseif ($action == 'resume') {
+
+	$time = Model::get('time')->last();
+	$time->resume($_GET['paused']);
+
+}

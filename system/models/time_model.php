@@ -6,14 +6,14 @@ class Time_model extends Model
 
 	function pause()
 	{
-		$this->pause = true;
+		$this->paused = 1;
 		$this->save();
 	}
 
 	function resume($time_paused)
 	{ 
 		$this->mins_paused = $this->mins_paused + $time_paused;
-		$this->pause = false;
+		$this->paused = 0;
 		$this->save();
 	}
 

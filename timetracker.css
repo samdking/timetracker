@@ -3,7 +3,9 @@
 	#timetracker fieldset { position: relative; border: 0; margin: 0;}
 		#timetracker input { font-size: 12px; display: none;}
 		#timetracker #client,
-		#timetracker #comment { display: block; font-size: 18px; padding: 6px; margin: 0 0 15px; width: 100%; }
+		#timetracker #comment { border-radius: 10px; border: 1px solid #AAA; box-shadow: 1px 0px 5px #EEE; display: block; font-size: 18px; padding: 6px 8px; color: #555; margin: 0 0 15px; width: 100%; }
+		#timetracker #client:focus,
+		#timetracker #comment:focus { box-shadow: 0 0 8px orange; outline: none; }
 		#timetracker input.match { font-weight: bold}
 		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 30px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
@@ -14,4 +16,4 @@
 		#timetracker #finish { float: left; }
 		#timetracker #pause { float: right; }
 		#timetracker #log { float: left; }
-		#timetracker #comment { line-height: 16px; font-size: 14px; display: none; font-size: 12px;}
+		#timetracker #comment { line-height: 16px; font-size: 14px; display: none; font-size: 12px; border-radius: 0;}

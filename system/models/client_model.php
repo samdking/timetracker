@@ -8,4 +8,11 @@ class Client_model extends Model
 	{
 		Model::get('time')->create(array('client_id'=>$this->id, 'start_time'=>new Now));
 	}
+
+	function create($props)
+	{
+		$props['created'] = new Now;
+		parent::create($props);
+		unset($this->properties['created']);
+	}
 }

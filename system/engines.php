@@ -41,7 +41,7 @@ class MySQLEngine extends Engine
 			break;
 			case 'select':
 			default:
-				$sql = 'SELECT * FROM ' . $this->sql['table'];
+				$sql = 'SELECT ' . (isset($this->sql['fields'])? $this->sql['fields'] : '*') . ' FROM ' . $this->sql['table'];
 			break;
 		}
 		
@@ -73,13 +73,14 @@ class MySQLEngine extends Engine
 		if (is_object($this->result))
 			while($row = $this->result->fetch_assoc())
 				$data[] = $row;
-		return isset($data)? $data : array();		
+		return isset($data)? $data : array();
 	}
 
 	function execute()
 	{
 		$sql = $this->construct_sql();
-		echo '<p>' . $sql . '</p>';
+		if (DEBUG)
+			echo '<p>' . $sql . '</p>';
 		$this->result = $this->handle->query($sql);
 		if ($error = $this->handle->error)
 			throw new Exception($error . ' in ' . $sql);
@@ -135,20 +136,25 @@ class MySQLEngine extends Engine
 
 	function select($values)
 	{
-		$this->sql['select'] = $values;
+		if (func_get_args() > 1)
+			$values = func_get_args();
+		foreach((array)$values as $v)
+			$fields[] = '`' . $v . '`';
+		$this->sql['fields'] = implode(', ', $fields);
 	}
 
 	function where($conditions)
 	{
-		$this->sql['where'] = $this->params($conditions);
+		$this->sql['where'] = $this->params($conditions, ' AND ');
 	}
 
-	private function params($params)
+	private function params($params, $join = ', ')
 	{
 		foreach($params as $key=>$val) {
-			$val = is_string($val) || is_null($val)? "'$val'" : $val;
-			$conditions[] = "`$key` = " . $val;
+			if (!is_object($val))
+				$val = new SQLCommand($val);
+			$conditions[] = "`$key` " . $val;
 		}
-		return implode(', ', $conditions);
+		return implode($join, $conditions);
 	}
 }

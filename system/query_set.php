@@ -1,10 +1,72 @@
 <?php
 
-class Query_set
+class Query_set implements Iterator, ArrayAccess
 {
 	private $model;
 	private $engine;
-	private $single_result;
+	private $single_result = false;
+	private $result;
+
+	function get_result()
+	{
+		if (!$this->result)
+			$this->result = $this->make_objects($this->engine->result());
+	}
+
+	function offsetExists($key)
+	{
+		$this->get_result();
+		return isset($this->result[$key]);
+	}
+
+	function offsetGet($key)
+	{
+		$this->get_result();
+		if (isset($this->result[$key]))
+			return $this->result[$key];
+	}
+
+	function offsetSet($key, $value)
+	{
+		$this->get_result();
+		$this->result[$key] = $value;
+	}
+
+	function offsetUnset($key)
+	{
+		$this->get_result();
+		unset($this->result[$key]);
+	}
+	
+	function rewind() 
+	{
+		$this->get_result();
+		reset($this->result);
+    }
+
+    function current() 
+	{
+		$this->get_result();
+        return current($this->result);
+    }
+
+    function key() 
+	{
+		$this->get_result();
+        return key($this->result);
+    }
+
+    function next() 
+	{
+		$this->get_result();
+         return next($this->result);
+    }
+
+    function valid() 
+	{
+		$this->get_result();
+        return false !== current($this->result);
+    }
 
 	function __construct($model)
 	{
@@ -19,23 +81,22 @@ class Query_set
 
 	function first()
 	{
-		$this->limit(1);
-		$objects = $this->make_objects($this->engine->result());
-		return $objects? reset($objects) : NULL;
+		$this->limit(1)->get_result();
+		$this->result = reset($this->result);
+		return $this->result? $this->result : NULL;
 	}
 
 	function last()
 	{
-		$this->limit(1);
-		$this->order('id desc');
-		$objects = $this->make_objects($this->engine->result());
-		return $objects? reset($objects) : NULL;
+		$this->limit(1)->order('id desc')->get_result();
+		$this->result = reset($this->result);
+		return $this->result? $this->result : NULL;
 	}
 
 	function make_objects($arr)
 	{
 		if (empty($arr))
-			return false;
+			return array();
 		foreach($arr as $data) {
 			$obj = new $this->model;
 			$obj->populate($data);
@@ -54,8 +115,8 @@ class Query_set
 	{
 		$obj = $this->filter($params)->first();
 		if (!$obj) {
-			$obj = new $this->model;
-			$obj->create($params);
+			$model = new $this->model;
+			$obj = $model->create($params);
 		}
 		return $obj;
 	}
@@ -70,5 +131,20 @@ class Query_set
 	{
 		$this->engine->where($where);
 		return $this;
+	}
+
+	function values($fields)
+	{
+		$this->engine->select($fields);
+		$result = $this->engine->result();
+		$array = array();
+		foreach($result as $i=>$row)
+			if (is_array($fields))
+				foreach($fields as $field)
+					$array[$i][$field] = $row[$field];
+			else
+				$array[$i] = $row[$fields];
+		$this->result = $array;
+		return $array;
 	}
 }

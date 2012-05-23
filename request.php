@@ -1,6 +1,6 @@
 <?php
 
-include 'system/db.php';
+include 'system/sql_classes.php';
 include 'system/query_set.php';
 include 'system/model.php';
 include 'system/config.php';
@@ -12,14 +12,17 @@ foreach($gets as $get)
 
 if ($query) {
 
-	$clients = array('Bozboz', 'Levellers', 'Timothy Roe', 'Events House', 'Metalheadz', 'Quietmark', 'Toolroom', 'SSL');
+	$clients = Model::get('client')->filter(array('name'=>new Contains($query)))->values('name');
+	
+	/*
+	array('name'=>new GreaterThan(20));
+	array('name'=>new BeginsWidth('Lemon'));
+	array('name'=>new In('John', 'Chris', 'Bob'));
+	array('name'=>new Between(20, 30));
+	array('date'=>new Year(2012));*/
 
-	foreach($clients as $c)
-		if (preg_match('/' . $query . '/i', $c))
-			$matches[] = $c;
-
-	if (isset($matches))
-		echo '<ul><li>' . implode('</li><li>', $matches) . '</li></ul>';
+	if (!empty($clients))
+		echo '<ul><li>' . implode('</li><li>', $clients) . '</li></ul>';
 
 } elseif ($action == 'start') {
 
@@ -35,5 +38,15 @@ if ($query) {
 
 	$time = Model::get('time')->last();
 	$time->resume($_GET['paused']);
+
+} elseif ($action == 'finish') {
+
+	$time = Model::get('time')->last();
+	$time->stop($_GET['total']);
+
+} elseif ($action == 'log') {
+
+	$time = Model::get('time')->last();
+	$time->update(array('log_message' => $_POST['comment']));
 
 }

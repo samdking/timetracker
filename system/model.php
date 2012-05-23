@@ -8,7 +8,8 @@ class Model
 	static function get($model)
 	{
 		$class_name = $model . '_model';
-		include 'models/' . $class_name . '.php';
+		if (!class_exists($class_name))
+			include 'models/' . $class_name . '.php';
 		return new $class_name;
 	}
 
@@ -51,14 +52,14 @@ class Model
 	function save()
 	{
 		if ($this->id)
-			$this->update();
+			$this->update($this->properties);
 		else
 			$this->create($this->properties);
 	}
 
-	function update()
+	function update($props)
 	{
-		static::engine()->update($this->properties, array('id' => $this->id))->execute();
+		static::engine()->update($props, array('id' => $this->id))->execute();
 	}
 
 	function create($props)

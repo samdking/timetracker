@@ -6,8 +6,7 @@ class Time_model extends Model
 
 	function pause()
 	{
-		$this->paused = 1;
-		$this->save();
+		$this->update(array('paused'=>1));
 	}
 
 	function resume($time_paused)
@@ -15,6 +14,11 @@ class Time_model extends Model
 		$this->mins_paused = $this->mins_paused + $time_paused;
 		$this->paused = 0;
 		$this->save();
+	}
+
+	function stop($total_time)
+	{
+		$this->update(array('total_mins'=>$total_time));
 	}
 
 }

@@ -13,6 +13,13 @@ class Model
 		return new $class_name;
 	}
 
+	static function engine()
+	{
+		$engine = Engine::get('mysql');
+		$engine->from(static::$db_table);
+		return $engine;
+	}
+
 	function __call($method, $args)
 	{
 		$queryset = $this->query_set();
@@ -37,13 +44,6 @@ class Model
 		return new Query_set(get_class($this));
 	}
 
-	static function engine()
-	{
-		$engine = Engine::get('mysql');
-		$engine->from(static::$db_table);
-		return $engine;
-	}
-
 	function populate($props)
 	{
 		$this->properties = $props;
@@ -64,8 +64,7 @@ class Model
 
 	function create($props)
 	{
-		//$params['created'] = new Now;
-		$params['id'] = static::engine()->insert($props)->execute()->last_id();
+		$props['id'] = static::engine()->insert($props)->execute()->last_id();
 		$obj = new $this;
 		$obj->populate($props);
 		return $obj;

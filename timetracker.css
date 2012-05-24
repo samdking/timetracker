@@ -1,16 +1,18 @@
 * { list-style: none; padding: 0; margin: 0; font-family: helvetica, arial, sans-serif; box-sizing: border-box;}
-#timetracker { width: 300px; margin: 10% auto; }
-	#timetracker fieldset { position: relative; border: 0; margin: 0;}
-		#timetracker input { font-size: 12px; display: none;}
+#timetracker { border-radius: 5px; background: #EEE; border: 1px solid #CCC; box-shadow: 0 1px 0 #DDD; width: 320px; margin: 10% auto; }
+	#timetracker h1 { font-size: 14px; font-weight: normal; margin: 0; padding: 12px; border-bottom: 1px solid #BBB; color: #777 }
+	#timetracker form { padding: 12px; border-top: 1px solid #FFF; }
+	#timetracker fieldset { position: relative; border: 0 }
+		#timetracker input { font-size: 12px; display: none; margin-top: 10px;}
 		#timetracker #client,
-		#timetracker #comment { border-radius: 10px; border: 1px solid #AAA; box-shadow: 1px 0px 5px #EEE; display: block; font-size: 18px; padding: 6px 8px; color: #555; margin: 0 0 15px; width: 100%; }
+		#timetracker #comment { margin-top: 10px; box-shadow: inset 0 1px 3px #DDD; border-radius: 5px; border: 1px solid #AAA; box-shadow: 1px 0px 5px #EEE; display: block; font-size: 18px; padding: 6px; color: #555; width: 100%; }
 		#timetracker #client:focus,
 		#timetracker #comment:focus { box-shadow: 0 0 8px orange; outline: none; }
 		#timetracker input.match { font-weight: bold}
 		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 30px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
 		#timetracker input.active { background: orange; color: #FFF; font-weight: bold;}
-		#timetracker #time { background: #666; line-height: 1.2; padding: 0 20px; border-radius: 25px; margin-bottom: 15px; display: block; width: 100%; text-align: center; color: #FFF; font-family: Monaco, "courier new"; font-size: 100px;}
+		#timetracker #time { background: #666; line-height: 1.2; padding: 0 20px; border-radius: 20px; display: block; width: 100%; text-align: center; color: #FFF; font-family: Monaco, "courier new"; font-size: 90px;}
 		#timetracker #time.inactive { color: #BBB; background-color: #888; }
 		#timetracker #start { float: left; }
 		#timetracker #finish { float: left; }

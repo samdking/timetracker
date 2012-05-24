@@ -1,15 +1,45 @@
 <?php
 
-if (!$_GET['value'])
-	exit;
+include 'system/sql_classes.php';
+include 'system/query_set.php';
+include 'system/model.php';
+include 'system/config.php';
+include 'system/engine.php';
 
-$value = $_GET['value'];
+$action = isset($_GET['action'])? $_GET['action'] : 'query';
 
-$clients = array('Bozboz', 'Levellers', 'Timothy Roe', 'Events House', 'Metalheadz', 'Quietmark', 'Toolroom', 'SSL');
+switch($action)
+{
+	case 'query':
+		if (empty($_GET['query']))
+			return;
+		$clients = Model::get('client')->filter(array('name'=>new Contains($_GET['query'])))->values('name');
+		if (!empty($clients))
+			exit ('<ul><li>' . implode('</li><li>', $clients) . '</li></ul>');
+		break;
+		
+	case 'start':
+		$client = Model::get('client')->first_or_create(array('name'=>$client));
+		$client->start_timing();
+		break;
 
-foreach($clients as $c)
-	if (preg_match('/' . $value . '/i', $c))
-		$matches[] = $c;
+	case 'pause':
+		$time = Model::get('time')->last();
+		$time->pause();
+		break;
 
-if (isset($matches))
-	echo '<ul><li>' . implode('</li><li>', $matches) . '</li></ul>';
+	case 'resume':
+		$time = Model::get('time')->last();
+		$time->resume($_GET['paused']);
+		break;
+
+	case 'finish':
+		$time = Model::get('time')->last();
+		$time->stop($_GET['total']);
+		break;
+
+	case 'log':
+		$time = Model::get('time')->last();
+		$time->update(array('log_message' => $_POST['comment']));
+		break;
+}

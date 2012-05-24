@@ -10,6 +10,7 @@
 
 	<div id="timetracker">
 
+		<h1>Bozboz Timetracker</h1>
 		<form>
 			<span id="time" class="inactive">0:00</span>
 			<fieldset>

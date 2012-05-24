@@ -4,13 +4,18 @@ var timing = false,
     start_time,
     paused_time;
 
-$.fn.startTimer = function(start_time) {
+function seconds_passed()
+{
+	var time = new Date().getTime() - start_time;
+	return Math.floor(time / 1000);
+}
+
+$.fn.startTimer = function() {
 	var obj = $(this);
 	timer = window.setInterval(function() {
-		var time = new Date().getTime() - start_time,
-		    total = Math.floor(time / 1000),
-		    mins = Math.floor(total / 60),
-		    secs = total%60;
+		var secs = seconds_passed(),
+		    mins = Math.floor(secs / 60),
+		    secs = secs%60;
 		obj.html(mins + ':' + (secs < 10? '0' : '') + secs);
 	}, 1000);
 }
@@ -35,18 +40,21 @@ $(function() {
 			$client.focus();
 			return false;
 		}
-		timing = true;
-		$pause.show();
-		$start.hide();
-		$finish.show();
-		$client.addClass('active').attr('disabled', true);
-		$time.removeClass('inactive');
-		start_time = new Date().getTime();
-		$time.startTimer(start_time);
+		$.get('request.php?action=start&client=' + $client.val(), function() {
+			timing = true;
+			$pause.show();
+			$start.hide();
+			$finish.show();
+			$client.addClass('active').attr('disabled', true);
+			$time.removeClass('inactive');
+			start_time = new Date().getTime();
+			$time.startTimer();
+		});
 		return false;
 	});
 
 	$finish.on('click', function() {
+		$.get('request.php?action=finish&total=' + Math.floor(seconds_passed(start_time)/60));
 		timing = false;
 		$finish.hide();
 		$pause.hide();
@@ -56,25 +64,34 @@ $(function() {
 	});
 
 	$log.on('click', function() {
-		// various ajax
+		$.post('request.php?action=log', {comment:$comment.val()});
 		$comment.val('').hide();
 		$log.hide();
 		$start.show();
-		$client.removeClass('active').attr('disabled', false);
+		$client.removeClass('active').attr('disabled', false).focus();
 		$time.removeClass('inactive');
 	});
 
 	$pause.on('click', function() {
 		timing = !timing;
 		if (timing) {
-			start_time += (new Date().getTime() - paused_time);
-			$time.startTimer(start_time);
+			var duration = (new Date().getTime() - paused_time);
+			$.get('request.php?action=resume&paused=' + Math.floor(duration/1000/60));
+			start_time += duration;
+			$time.startTimer();
 			$time.removeClass('paused');
 		} else {
+			$.get('request.php?action=pause');
 			paused_time = new Date().getTime();
 			window.clearInterval(timer);
 			$time.addClass('paused');
 		}
+	});
+
+	$suggestions.on('click', 'li', function() {
+		$client.val($(this).html()).addClass('match');
+		$suggestions.hide();
+		$start.show();
 	});
 
 	$client.on({
@@ -82,19 +99,25 @@ $(function() {
 			$(this).removeClass('match');
 		},
 		'keyup': function(e) {
-			$.get('request.php?value=' + this.value, function(data) {
-				$suggestions.html(data).show();
-			});
+			if (e.which != 13) {
+				$.get('request.php?query=' + this.value, function(data) {
+					$suggestions.html(data).show();
+				});
+			}
 		},
-		'keydown blur': function(e) {
-			if (e.type == 'blur' || e.which == 9) {
+		'keydown': function(e) {
+			if (e.which == 9 || e.which == 13) {
 				if ($suggestions.find('li').length == 1) {
-					this.value = $suggestions.find('li').html();
-					$(this).addClass('match');
-					$start.show();
+					$(this).val($suggestions.find('li').html()).addClass('match');
 				}
+				$start.show();
 				$suggestions.hide();
 			}
+		},
+		'blur': function(e) {
+			window.setTimeout(function() {
+				$suggestions.hide();
+			}, 200);
 		}
 	});
 });

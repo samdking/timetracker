@@ -1,4 +1,4 @@
-* { list-style: none; padding: 0; margin: 0; font-family: helvetica, arial, sans-serif; box-sizing: border-box;}
+* { list-style: none; padding: 0; margin: 0; font-family: helvetica, arial, sans-serif; box-sizing: border-box; -moz-box-sizing: border-box;}
 #timetracker { border-radius: 5px; background: #EEE; border: 1px solid #CCC; box-shadow: 0 1px 0 #DDD; width: 320px; margin: 10% auto; }
 	#timetracker h1 { font-size: 14px; font-weight: normal; margin: 0; padding: 12px; border-bottom: 1px solid #BBB; color: #777 }
 	#timetracker form { padding: 12px; border-top: 1px solid #FFF; }

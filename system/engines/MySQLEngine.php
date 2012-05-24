@@ -1,20 +1,5 @@
 <?php
 
-class Engine
-{
-	function __construct()
-	{
-		if (method_exists($this, 'init'))
-			$this->init();
-	}
-
-	static function get($type)
-	{
-		$class_name = $type . 'engine';
-		return new $class_name;
-	}
-}
-
 class MySQLEngine extends Engine
 {
 

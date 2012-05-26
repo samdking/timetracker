@@ -17,10 +17,10 @@
 				<input name="value" autocomplete="off" id="client" type="text">
 				<div id="suggestions"></div>
 				<textarea id="comment" rows="3"></textarea>
-				<input type="button" id="start" value="Start">
-				<input type="button" id="finish" value="Finish">
-				<input type="button" id="pause" value="Pause">
-				<input type="button" id="log" value="Log">
+				<input type="button" id="start" class="btn" value="Start">
+				<input type="button" id="finish" class="btn" value="Finish">
+				<input type="button" id="pause" class="btn" value="Pause">
+				<input type="button" id="log" class="btn" value="Log">
 			</fieldset>
 		</form>
 

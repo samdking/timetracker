@@ -1,22 +1,26 @@
 * { list-style: none; padding: 0; margin: 0; font-family: helvetica, arial, sans-serif; box-sizing: border-box; -moz-box-sizing: border-box;}
 #timetracker { border-radius: 5px; background: #EEE; border: 1px solid #CCC; box-shadow: 0 1px 0 #DDD; width: 320px; margin: 10% auto; }
 	#timetracker h1 { font-size: 14px; font-weight: normal; margin: 0; padding: 12px; border-bottom: 1px solid #BBB; color: #777 }
-	#timetracker form { padding: 12px; border-top: 1px solid #FFF; }
+	#timetracker form { padding: 12px; border-top: 1px solid #FFF; box-shadow: inset 0 1px 3px #FFF; }
 	#timetracker fieldset { position: relative; border: 0 }
 		#timetracker input { font-size: 12px; display: none; margin-top: 10px;}
 		#timetracker #client,
-		#timetracker #comment { margin-top: 10px; box-shadow: inset 0 1px 3px #DDD; border-radius: 5px; border: 1px solid #AAA; box-shadow: 1px 0px 5px #EEE; display: block; font-size: 18px; padding: 6px; color: #555; width: 100%; }
+		#timetracker #comment { margin-top: 10px; box-shadow: inset 0 1px 3px #DDD; border-radius: 5px; border: 1px solid #AAA; box-shadow: 1px 0px 5px #EEE; display: block; font-size: 16px; padding: 8px; color: #555; width: 100%; }
 		#timetracker #client:focus,
 		#timetracker #comment:focus { box-shadow: 0 0 8px orange; outline: none; }
 		#timetracker input.match { font-weight: bold}
 		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 42px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
 			#timetracker #suggestions .error { display: block; padding: 7px; text-align: center; font-weight: bold; font-size: 11px; color: #C00; }
-		#timetracker input.active { background: orange; color: #FFF; font-weight: bold;}
+		#timetracker #client.active { border-color: #AAA; background: #DDD; font-weight: bold;}
 		#timetracker #time { background: #666; line-height: 1.2; padding: 0 20px; border-radius: 20px; display: block; width: 100%; text-align: center; color: #FFF; font-family: Monaco, "courier new"; font-size: 90px;}
 		#timetracker #time.inactive { color: #BBB; background-color: #888; }
-		#timetracker #start { float: left; }
+		#timetracker #start { float: left; display: none; }
 		#timetracker #finish { float: left; }
 		#timetracker #pause { float: right; }
 		#timetracker #log { float: left; }
 		#timetracker #comment { line-height: 16px; font-size: 14px; display: none; font-size: 12px; border-radius: 0;}
+
+		/* Thanks to Twitter Bootstrap for this */
+		#timetracker .btn { background: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6) repeat-x #F5F5F5; border: 1px solid; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05); color: #333333; cursor: pointer; margin-bottom: 0; text-align: center; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; font-size: 11px; line-height: 16px; padding: 5px 9px; border-radius: 4px;}
+		#timetracker .btn:hover { -moz-transition: background-position 0.1s linear 0s; background-color: #E6E6E6; background-position: 0 -15px; color: #333333; text-decoration: none; }

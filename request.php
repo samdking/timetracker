@@ -24,27 +24,22 @@ switch($action)
 		break;
 		
 	case 'start':
-		$client = Model::get('client')->first_or_create(array('name'=>$client));
-		$client->start_timing();
+		$client = Model::get('client')->first_or_create(array('name'=>$client))->start_timing();
 		break;
 
 	case 'pause':
-		$time = Model::get('time')->last();
-		$time->pause();
+		Model::get('time')->last()->pause();
 		break;
 
 	case 'resume':
-		$time = Model::get('time')->last();
-		$time->resume($_GET['paused']);
+		Model::get('time')->last()->resume($_GET['paused']);
 		break;
 
 	case 'finish':
-		$time = Model::get('time')->last();
-		$time->stop($_GET['total']);
+		Model::get('time')->last()->stop($_GET['total']);
 		break;
 
 	case 'log':
-		$time = Model::get('time')->last();
-		$time->update(array('log_message' => $_POST['comment']));
+		Model::get('time')->last()->update(array('log_message' => $_POST['comment']));
 		break;
 }

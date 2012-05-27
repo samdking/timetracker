@@ -5,21 +5,6 @@ class Model
 	protected $properties;
 	protected static $engine;
 
-	static function get($model)
-	{
-		$class_name = $model . '_model';
-		if (!class_exists($class_name))
-			include 'models/' . $class_name . '.php';
-		return new $class_name;
-	}
-
-	static function engine()
-	{
-		$engine = Engine::get('mysql');
-		$engine->from(static::$db_table);
-		return $engine;
-	}
-
 	function __call($method, $args)
 	{
 		$queryset = $this->query_set();
@@ -37,6 +22,21 @@ class Model
 	function __set($prop, $value)
 	{
 		$this->properties[$prop] = $value;
+	}
+
+	static function get($model)
+	{
+		$class_name = $model . '_model';
+		if (!class_exists($class_name))
+			include dirname(__FILE__) . '/../app/models/' . $class_name . '.php';
+		return new $class_name;
+	}
+
+	static function engine()
+	{
+		$engine = Engine::get('mysql');
+		$engine->from(static::$db_table);
+		return $engine;
 	}
 
 	function query_set()

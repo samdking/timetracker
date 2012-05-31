@@ -26,7 +26,7 @@ class Model
 
 	static function get($model)
 	{
-		$class_name = $model . '_model';
+		$class_name = strpos($model, '_model') === false? $model . '_model' : $model;
 		if (!class_exists($class_name))
 			include dirname(__FILE__) . '/../app/models/' . $class_name . '.php';
 		return new $class_name;

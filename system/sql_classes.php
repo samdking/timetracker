@@ -13,7 +13,7 @@ class SQLCommand
 
 	function __construct($value = false)
 	{
-		$this->value = $value;
+		$this->value = mysql_real_escape_string($value);
 	}
 
 	function __tostring()

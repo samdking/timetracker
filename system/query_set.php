@@ -79,16 +79,16 @@ class Query_set implements Iterator, ArrayAccess
 		$this->engine->select(array('id'=>$value));
 	}
 
-	function first()
+	function first($conditions = array())
 	{
-		$this->limit(1)->get_result();
+		$this->filter($conditions)->limit(1)->get_result();
 		$this->result = reset($this->result);
 		return $this->result? $this->result : NULL;
 	}
 
-	function last()
+	function last($conditions = array())
 	{
-		$this->limit(1)->order('id desc')->get_result();
+		$this->filter($conditions)->limit(1)->order('id desc')->get_result();
 		$this->result = reset($this->result);
 		return $this->result? $this->result : NULL;
 	}

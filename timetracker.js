@@ -4,20 +4,20 @@ var timing = false,
     start_time,
     paused_time;
 
-function seconds_passed()
+function mins_passed()
 {
 	var time = new Date().getTime() - start_time;
-	return Math.floor(time / 1000);
+	return Math.floor(time / 1000 / 60);
 }
 
 $.fn.startTimer = function() {
 	var obj = $(this);
 	timer = window.setInterval(function() {
-		var secs = seconds_passed(),
-		    mins = Math.floor(secs / 60),
-		    secs = secs%60;
-		obj.html(mins + ':' + (secs < 10? '0' : '') + secs);
-	}, 1000);
+		var mins = mins_passed(),
+		    hours = Math.floor(mins / 60),
+		    mins = mins%60;
+		obj.html(hours + ':' + (mins < 10? '0' : '') + mins);
+	}, 60000);
 }
 
 $(function() {
@@ -54,7 +54,7 @@ $(function() {
 	});
 
 	$finish.on('click', function() {
-		$.get('request.php?action=finish&total=' + Math.floor(seconds_passed(start_time)/60));
+		$.get('request.php?action=finish&total=' + mins_passed());
 		timing = false;
 		$finish.hide();
 		$pause.hide();
@@ -80,11 +80,13 @@ $(function() {
 			start_time += duration;
 			$time.startTimer();
 			$time.removeClass('paused');
+			this.value = 'Pause';
 		} else {
 			$.get('request.php?action=pause');
 			paused_time = new Date().getTime();
 			window.clearInterval(timer);
 			$time.addClass('paused');
+			this.value = 'Resume';
 		}
 	});
 

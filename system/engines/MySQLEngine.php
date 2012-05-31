@@ -74,7 +74,7 @@ class MySQLEngine extends Engine
 
 	function last_id()
 	{
-		$this->handle->insert_id;
+		return $this->handle->insert_id;
 	}
 
 	function from($value)

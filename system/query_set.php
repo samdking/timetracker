@@ -115,8 +115,7 @@ class Query_set implements Iterator, ArrayAccess
 	{
 		$obj = $this->filter($params)->first();
 		if (!$obj) {
-			$model = new $this->model;
-			$obj = $model->create($params);
+			$obj = Model::get($this->model)->create($params);
 		}
 		return $obj;
 	}

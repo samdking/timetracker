@@ -12,7 +12,8 @@ class Client_model extends Model
 	function create($props)
 	{
 		$props['created'] = new Now;
-		parent::create($props);
-		unset($this->properties['created']);
+		$obj = parent::create($props);
+		unset($obj->properties['created']);
+		return $obj;
 	}
 }

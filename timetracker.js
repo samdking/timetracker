@@ -4,16 +4,16 @@ var timing = false,
     start_time,
     paused_time;
 
-function mins_passed()
+function mins_passed(since)
 {
-	var time = new Date().getTime() - start_time;
+	var time = new Date().getTime() - since;
 	return Math.floor(time / 1000 / 60);
 }
 
 $.fn.startTimer = function() {
 	var obj = $(this);
 	timer = window.setInterval(function() {
-		var mins = mins_passed(),
+		var mins = mins_passed(start_time),
 		    hours = Math.floor(mins / 60),
 		    mins = mins%60;
 		obj.html(hours + ':' + (mins < 10? '0' : '') + mins);
@@ -40,7 +40,7 @@ $(function() {
 			$client.focus();
 			return false;
 		}
-		$.get('request.php?action=start&client=' + $client.val(), function() {
+		$.post('request.php?action=start', {'client':$client.val()}, function() {
 			timing = true;
 			$pause.show();
 			$start.hide();
@@ -54,7 +54,7 @@ $(function() {
 	});
 
 	$finish.on('click', function() {
-		$.get('request.php?action=finish&total=' + mins_passed());
+		$.get('request.php?action=finish&total=' + mins_passed(start_time));
 		timing = false;
 		$finish.hide();
 		$pause.hide();
@@ -105,6 +105,8 @@ $(function() {
 				$.get('request.php?query=' + this.value, function(data) {
 					$suggestions.html(data).show();
 				});
+			} else {
+				$start.focus();
 			}
 		},
 		'keydown': function(e) {

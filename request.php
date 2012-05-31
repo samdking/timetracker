@@ -1,15 +1,6 @@
 <?php
 
-include 'system/sql_classes.php';
-include 'system/query_set.php';
-include 'system/model.php';
-include 'system/engine.php';
-include 'system/functions.php';
-
-if (!file_exists('system/config.php'))
-	error('No config file exists');
-
-include 'system/config.php';
+include 'system/init.php';
 
 $action = isset($_GET['action'])? $_GET['action'] : 'query';
 
@@ -24,7 +15,7 @@ switch($action)
 		break;
 		
 	case 'start':
-		$client = Model::get('client')->first_or_create(array('name'=>$client))->start_timing();
+		Model::get('client')->first_or_create(array('name'=>$_POST['client']))->start_timing();
 		break;
 
 	case 'pause':

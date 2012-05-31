@@ -18,7 +18,7 @@ class Time_model extends Model
 
 	function stop($total_time)
 	{
-		$this->update(array('total_mins'=>$total_time));
+		$this->update(array('total_mins'=>$total_time, 'finished'=>1));
 	}
 
 }

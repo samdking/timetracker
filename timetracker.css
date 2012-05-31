@@ -9,7 +9,8 @@
 		#timetracker #client:focus,
 		#timetracker #comment:focus { box-shadow: 0 0 8px orange; outline: none; }
 		#timetracker input.match { font-weight: bold}
-		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 42px }
+		#timetracker #start-time { color: rgba(0, 0, 0, 0.6); font-family: Monaco, "Courier New"; font-size: 12px; line-height: 14px; padding: 10px; position: absolute; right: 0; top: 10px; }
+		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 44px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
 			#timetracker #suggestions .error { display: block; padding: 7px; text-align: center; font-weight: bold; font-size: 11px; color: #C00; }
 		#timetracker #client.active { border-color: #AAA; background: #DDD; font-weight: bold;}

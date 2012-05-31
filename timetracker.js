@@ -10,6 +10,13 @@ function mins_passed(since)
 	return Math.floor(time / 1000 / 60);
 }
 
+function time_format(date)
+{
+	var hrs = date.getHours();
+	var mns = date.getMinutes();
+	return (hrs > 12? hrs - 12 : hrs) + ':' + (mns < 10? '0' + mns : mns) + ' ' + (hrs >= 12? 'PM' : 'AM');
+}
+
 $.fn.startTimer = function() {
 	var obj = $(this);
 	timer = window.setInterval(function() {
@@ -26,6 +33,7 @@ $(function() {
 	    $client = $('#client'),
 	    $pause = $('#pause'),
 	    $start = $('#start'),
+	    $start_time = $('#start-time'),
 	    $finish = $('#finish'),
 	    $log = $('#log'),
 	    $comment = $('#comment'),
@@ -47,7 +55,9 @@ $(function() {
 			$finish.show();
 			$client.addClass('active').attr('disabled', true);
 			$time.removeClass('inactive');
-			start_time = new Date().getTime();
+			var date = new Date();
+			start_time = date.getTime();
+			$start_time.html(time_format(date));
 			$time.startTimer();
 		});
 		return false;
@@ -59,6 +69,7 @@ $(function() {
 		$finish.hide();
 		$pause.hide();
 		$log.show();
+		$start_time.html('');
 		window.clearInterval(timer);
 		$comment.show().focus();
 	});
@@ -82,8 +93,8 @@ $(function() {
 			$time.removeClass('paused');
 			this.value = 'Pause';
 		} else {
-			$.get('request.php?action=pause');
 			paused_time = new Date().getTime();
+			$.get('request.php?action=pause');
 			window.clearInterval(timer);
 			$time.addClass('paused');
 			this.value = 'Resume';

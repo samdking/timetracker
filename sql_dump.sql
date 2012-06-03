@@ -30,7 +30,7 @@ CREATE TABLE `clients` (
   `name` varchar(64) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -50,7 +50,7 @@ CREATE TABLE `times` (
   `total_mins` int(11) NOT NULL,
   `finished` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

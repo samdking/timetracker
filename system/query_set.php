@@ -128,7 +128,8 @@ class Query_set implements Iterator, ArrayAccess
 
 	function filter($where)
 	{
-		$this->engine->where($where);
+		if (!empty($where))
+			$this->engine->where($where);
 		return $this;
 	}
 

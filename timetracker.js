@@ -64,7 +64,7 @@ $(function() {
 	});
 
 	$finish.on('click', function() {
-		$.get('request.php?action=finish&total=' + mins_passed(start_time));
+		$.get('request.php?action=finish');
 		timing = false;
 		$finish.hide();
 		$pause.hide();
@@ -87,7 +87,7 @@ $(function() {
 		timing = !timing;
 		if (timing) {
 			var duration = (new Date().getTime() - paused_time);
-			$.get('request.php?action=resume&paused=' + Math.floor(duration/1000/60));
+			$.get('request.php?action=resume');
 			start_time += duration;
 			$time.startTimer();
 			$time.removeClass('paused');
@@ -112,7 +112,9 @@ $(function() {
 			$(this).removeClass('match');
 		},
 		'keyup': function(e) {
-			if (e.which != 13) {
+			if (!this.value)
+				$suggestions.html('');
+			else if (e.which != 13) {
 				$.get('request.php?query=' + this.value, function(data) {
 					$suggestions.html(data).show();
 				});

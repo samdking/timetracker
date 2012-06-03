@@ -23,11 +23,11 @@ switch($action)
 		break;
 
 	case 'resume':
-		Model::get('time')->last()->resume($_GET['paused']);
+		Model::get('time')->last()->resume();
 		break;
 
 	case 'finish':
-		Model::get('time')->last()->stop($_GET['total']);
+		Model::get('time')->last()->stop();
 		break;
 
 	case 'log':

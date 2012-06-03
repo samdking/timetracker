@@ -45,7 +45,7 @@ CREATE TABLE `times` (
   `start_time` datetime DEFAULT NULL,
   `paused` tinyint(1) DEFAULT NULL,
   `paused_time` datetime DEFAULT NULL,
-  `mins_paused` int(11) DEFAULT NULL,
+  `secs_paused` int(11) DEFAULT NULL,
   `log_message` text,
   `total_mins` int(11) NOT NULL,
   `finished` tinyint(1) NOT NULL,

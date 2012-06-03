@@ -7,7 +7,7 @@
 		$class = ' class="active" disabled="true"';
 		$visible = ' style="display: block"';
 		$start_time = date('h:i A', strtotime($time->start_time));
-		$relative_start_time = (strtotime($time->start_time) - ($time->mins_paused * 60)) * 1000;
+		$relative_start_time = (strtotime($time->start_time) - $time->secs_paused) * 1000;
 		$paused_time = $time->paused? strtotime($time->paused_time) * 1000 : 0;
 	} else {
 		$display = '0:00';

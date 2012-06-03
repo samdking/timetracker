@@ -9,25 +9,28 @@ class Time_model extends Model
 		$this->update(array('paused'=>1, 'paused_time'=>new Now));
 	}
 
-	function resume($time_paused)
+	function resume()
 	{ 
-		$this->mins_paused = $this->mins_paused + $time_paused;
+		$this->secs_paused = $this->sec_paused + (time() - strtotime($this->paused_time));
 		$this->paused = 0;
 		$this->save();
 	}
 
-	function stop($total_time)
+	function stop()
 	{
-		$this->update(array('total_mins'=>$total_time, 'finished'=>1));
+		$this->update(array(
+			'total_mins'=>floor((time() - strtotime($this->start_time) - $this->secs_paused) / 60), 
+			'finished'=>1
+		));
 	}
 
 	function get_current_mins()
 	{
 		if ($this->finished)
-			return $this->total_mins - $this->mins_paused;
-		$paused_mins = $this->paused? $this->mins_paused + floor((time() - strtotime($this->paused_time)) / 60) : (int)$this->mins_paused;
-		$mins = floor((time() - strtotime($this->start_time)) / 60);
-		return $mins - $paused_mins;
+			return $this->total_mins;
+		$paused_for = $this->paused? $this->secs_paused + (time() - strtotime($this->paused_time)) : $this->secs_paused;
+		$secs = time() - strtotime($this->start_time);
+		return floor(($secs - $paused_for) / 60);
 	}
 
 }

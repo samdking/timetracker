@@ -11,7 +11,7 @@ class Time_model extends Model
 
 	function resume()
 	{ 
-		$this->secs_paused = $this->sec_paused + (time() - strtotime($this->paused_time));
+		$this->secs_paused = $this->secs_paused + (time() - strtotime($this->paused_time));
 		$this->paused = 0;
 		$this->save();
 	}

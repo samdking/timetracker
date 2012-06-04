@@ -54,7 +54,7 @@ $(function() {
 			$start.hide();
 			$finish.show();
 			$client.addClass('active').attr('disabled', true);
-			$time.removeClass('inactive');
+			$time.val('').removeClass('inactive');
 			var date = new Date();
 			start_time = date.getTime();
 			$start_time.html(time_format(date));
@@ -80,7 +80,7 @@ $(function() {
 		$log.hide();
 		$start.show();
 		$client.removeClass('active').attr('disabled', false).focus();
-		$time.removeClass('inactive');
+		$time.addClass('inactive');
 	});
 
 	$pause.on('click', function() {

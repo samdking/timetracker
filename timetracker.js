@@ -66,7 +66,7 @@ $(function() {
 
 	start = function() {
 		$time.removeClass('paused');
-		$pause.val($pause[0].defaultValue);
+		$pause.val('Pause');
 		$time.startTimer();
 	}
 

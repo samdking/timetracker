@@ -93,7 +93,7 @@ $(function() {
 			$pause.trigger('click');
 		var new_id = this.value;
 		if (new_id == false) {
-			$time.html('0:00').addClass('inactive');
+			$time.html('0:00').addClass('inactive').removeClass('paused');
 			$client.removeClass('active').attr('disabled', false).val('').focus();
 			$start_time.html('');
 			$pause.hide();
@@ -125,7 +125,7 @@ $(function() {
 		$log.hide();
 		$start.show();
 		$client.removeClass('active').attr('disabled', false).focus();
-		$time.addClass('inactive');
+		$time.addClass('inactive').removeClass('paused');
 		if ($('#client-list option').length > 1) {
 			$('#client-list option:first').change();
 			$pause.focus();

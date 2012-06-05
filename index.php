@@ -1,40 +1,26 @@
 <?php
 	include 'system/init.php';
-	$time = Model::get('time')->last(array('finished'=>0));
+	$time = Model::get('time')->filter(array('finished'=>0))->order('paused ASC')->limit(1)->one();
 	if ($time) {
-		$client = Model::get('client')->first(array('id'=>$time->client_id));
-		$display = format_mins($time->get_current_mins());
-		$class = ' class="active" disabled="true"';
-		$visible = ' style="display: block"';
-		$start_time = date('h:i A', strtotime($time->start_time));
-		$relative_start_time = (strtotime($time->start_time) - $time->secs_paused) * 1000;
-		$paused_time = $time->paused? strtotime($time->paused_time) * 1000 : 0;
-	} else {
-		$display = '0:00';
-		$class = '';
-		$visible = '';
-		$start_time = '';
+		$client = Model::get('client')->find($time->client_id);
+		$start_time = strtotime($time->start_time) * 1000;
+		$offset = $time->paused_time();
 	}
+	$active_times = Model::get('time')->filter(array('finished'=>0));
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="jquery.min.js"></script>
 	<script src="timetracker.js"></script>
 	<link rel="stylesheet" href="timetracker.css">
 	<title>Bozboz Timetracker</title>
 <?php if ($time): ?>
 	<script>
-	start_time = <?=$relative_start_time?>;
-<?php 	if (!$time->paused): ?>
-	timing = true;
 	$(function() {
-		$('#time').startTimer();
+		init(<?=$time->id?>, '<?=$client->name?>', new Date(<?=$start_time?>), <?=$offset?>);
+		<?=$time->paused? 'pause()' : 'start()'?>;
 	});
-<?php 	else: ?>
-	paused_time = <?=$paused_time?>;
-	
-<?php 	endif ?>
 	</script>
 <?php endif ?>
 </head>
@@ -43,16 +29,25 @@
 	<div id="timetracker">
 
 		<h1>Bozboz Timetracker</h1>
+		<section class="switcher">
+			<label for="client-list"><strong><?=count($active_times)?></strong> active</label>
+			<select id="client-list">
+<?php foreach($active_times as $t): ?>
+				<option value="<?=$t->id?>"<?=$t->id == $time->id? ' selected' : ''?>><?=Model::get('client')->find($t->client_id)->name?></option>
+<?php endforeach ?>
+				<option value=""> - New</option>
+			</select>
+		</section>
 		<form>
-			<span id="time" class="<?=$time? 'active' : 'inactive'?>"><?=$display?></span>
+			<span id="time" class="inactive">0:00</span>
 			<fieldset>
-				<input name="value" autocomplete="off" id="client" type="text" value="<?=$time? $client->name : ''?>"<?=$class?>>
-				<span id="start-time"><?=$start_time?></span>
+				<input name="value" autocomplete="off" id="client" type="text">
+				<span id="start-time"></span>
 				<div id="suggestions"></div>
 				<textarea id="comment" rows="3"></textarea>
 				<input type="button" id="start" class="btn" value="Start">
-				<input type="button" id="finish" class="btn" value="Finish"<?=$visible?>>
-				<input type="button" id="pause" class="btn" value="<?=$time && $time->paused? 'Resume' : 'Pause'?>"<?=$visible?>>
+				<input type="button" id="finish" class="btn" value="Finish">
+				<input type="button" id="pause" class="btn" value="Pause">
 				<input type="button" id="log" class="btn" value="Log">
 			</fieldset>
 		</form>

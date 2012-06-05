@@ -1,9 +1,14 @@
 * { list-style: none; padding: 0; margin: 0; font-family: helvetica, arial, sans-serif; box-sizing: border-box; -moz-box-sizing: border-box;}
-#timetracker { border-radius: 5px; background: #EEE; border: 1px solid #CCC; box-shadow: 0 1px 0 #DDD; width: 320px; margin: 10% auto 2%; }
-	#timetracker h1 { font-size: 14px; font-weight: normal; margin: 0; padding: 12px; border-bottom: 1px solid #BBB; color: #777 }
+#timetracker { border-radius: 5px; background: #EEE; border: 1px solid #CCC; box-shadow: 0 1px 0 #DDD; width: 320px; margin: 8% auto 2%; }
+	#timetracker h1 { font-size: 14px; font-weight: normal; margin: 0; padding: 12px; border-bottom: 1px solid #BBB; color: #666 }
 	#timetracker form { padding: 12px; border-top: 1px solid #FFF; box-shadow: inset 0 1px 3px #FFF; }
 	#timetracker fieldset { position: relative; border: 0 }
 		#timetracker input { font-size: 12px; display: none; margin-top: 10px;}
+		
+		#timetracker .switcher { background: #DDD; text-align: right; border-bottom: 1px solid #CCC; display: none;}
+			#timetracker .switcher label { margin: 8px 12px; float: left; font-size: 11px; text-transform: uppercase; color: #888; line-height: 18px;}
+			#timetracker .switcher select { margin: 6px 12px; padding: 2px;}
+		
 		#timetracker #client,
 		#timetracker #comment { margin-top: 10px; box-shadow: inset 0 1px 3px #DDD; border-radius: 5px; border: 1px solid #AAA; box-shadow: 1px 0px 5px #EEE; display: block; font-size: 16px; padding: 8px; color: #555; width: 100%; }
 		#timetracker #client:focus,
@@ -16,6 +21,7 @@
 		#timetracker #client.active { border-color: #AAA; background: #DDD; font-weight: bold;}
 		#timetracker #time { background: #666; line-height: 1.2; padding: 0 20px; border-radius: 20px; display: block; width: 100%; text-align: center; color: #FFF; font-family: Monaco, "courier new"; font-size: 90px;}
 		#timetracker #time.inactive { color: #BBB; background-color: #888; }
+		#timetracker #time.paused { color: #444;}
 		#timetracker #start { float: left; display: none; }
 		#timetracker #finish { float: left; }
 		#timetracker #pause { float: right; }

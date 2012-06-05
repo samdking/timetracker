@@ -24,13 +24,10 @@ class Time_model extends Model
 		));
 	}
 
-	function get_current_mins()
-	{
-		if ($this->finished)
-			return $this->total_mins;
-		$paused_for = $this->paused? $this->secs_paused + (time() - strtotime($this->paused_time)) : $this->secs_paused;
-		$secs = time() - strtotime($this->start_time);
-		return floor(($secs - $paused_for) / 60);
+	function paused_time()
+	{		
+		$paused_duration = $this->paused? time() - strtotime($this->paused_time) : 0;
+		return 1000 * ($this->secs_paused + $paused_duration);
 	}
 
 }

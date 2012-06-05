@@ -6,7 +6,7 @@ class Client_model extends Model
 
 	function start_timing()
 	{
-		Model::get('time')->create(array('client_id'=>$this->id, 'start_time'=>new Now));
+		return Model::get('time')->create(array('client_id'=>$this->id, 'start_time'=>new Now));
 	}
 
 	function create($props)

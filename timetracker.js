@@ -129,6 +129,8 @@ $(function() {
 		if ($('#client-list option').length > 1) {
 			$('#client-list option:first').change();
 			$pause.focus();
+		} else {
+			$('.switcher').slideUp();
 		}
 	});
 

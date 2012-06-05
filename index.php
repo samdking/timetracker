@@ -1,6 +1,6 @@
 <?php
 	include 'system/init.php';
-	$time = Model::get('time')->filter(array('finished'=>0))->order('paused ASC')->limit(1)->one();
+	$time = Model::get('time')->filter(array('finished'=>0))->order('paused ASC')->one();
 	if ($time) {
 		$client = Model::get('client')->find($time->client_id);
 		$start_time = strtotime($time->start_time) * 1000;

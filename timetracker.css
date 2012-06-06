@@ -14,7 +14,7 @@
 		#timetracker #client:focus,
 		#timetracker #comment:focus { box-shadow: 0 0 8px orange; outline: none; }
 		#timetracker input.match { font-weight: bold}
-		#timetracker #start-time { color: rgba(0, 0, 0, 0.6); font-family: Monaco, "Courier New"; font-size: 12px; line-height: 14px; padding: 10px; position: absolute; right: 0; top: 10px; }
+		#timetracker #start-time { display: block; color: rgba(0, 0, 0, 0.6); font-family: Monaco, "Courier New"; font-size: 12px; line-height: 14px; padding: 10px; position: absolute; right: 0; top: 10px; }
 		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 44px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
 			#timetracker #suggestions .error { display: block; padding: 7px; text-align: center; font-weight: bold; font-size: 11px; color: #C00; }
@@ -27,6 +27,19 @@
 		#timetracker #pause { float: right; }
 		#timetracker #log { float: left; }
 		#timetracker #comment { line-height: 16px; font-size: 14px; display: none; font-size: 12px; border-radius: 0;}
+
+		#timetracker #send-to-logger { color: #CC0000; cursor: pointer; float: right; font-size: 18px; line-height: 12px; padding: 12px; }
+		#timetracker #send { float: right; display: block; }
+		#overview-table { width: 100%; font-size: 12px; border-collapse: collapse}
+			#overview-table th,
+			#overview-table td { padding: 6px 12px; border: 1px solid #BBB; color: #444;}
+			#overview-table th { border-top: none; text-align: left; background: #DDD; }
+			#overview-table tr:last-child td { border-bottom: 0;}
+			#overview-table td:first-child,
+			#overview-table th:first-child { border-left: 0}
+			#overview-table td:last-child,
+			#overview-table th:last-child { border-right: 0}
+			#overview-table tr:nth-child(2n+1) td { background: #FFF;}
 
 		/* Thanks to Twitter Bootstrap for this */
 		#timetracker .btn { background: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6) repeat-x #F5F5F5; border: 1px solid; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05); color: #333333; cursor: pointer; margin-bottom: 0; text-align: center; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; font-size: 11px; line-height: 16px; padding: 5px 9px; border-radius: 4px;}

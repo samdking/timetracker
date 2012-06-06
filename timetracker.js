@@ -46,11 +46,10 @@ $(function() {
 	    $finish = $('#finish'),
 	    $log = $('#log'),
 	    $comment = $('#comment'),
-	    $time = $('#time');
-
-	$('#timetracker form').on('submit', function() {
-		return false;
-	});
+	    $time = $('#time'),
+	    $send = $('#send');
+	    $sendtologger = $('#send-to-logger'),
+	    $me = $('#me');
 
 	init = function(id, client_name, date, offset) {
 		time_id = id;
@@ -79,7 +78,7 @@ $(function() {
 		if ($client.val() === '') {
 			$client.focus();
 		} else {
-			$.post('request.php?action=start', {'client':$client.val()}, function(id) {
+			$.post('request.php?action=start', {'me':$me.val(),'client':$client.val()}, function(id) {
 				$clientlist.prepend('<option value="'+id+'">' + $client.val() + '</option>').val(id);
 				init(id, $client.val(), new Date(), 0);
 				start();
@@ -131,6 +130,7 @@ $(function() {
 			$pause.focus();
 		} else {
 			$('.switcher').slideUp();
+			$send.show();
 		}
 	});
 
@@ -184,5 +184,11 @@ $(function() {
 				$suggestions.hide();
 			}, 200);
 		}
+	});
+
+	$sendtologger.on('click', function() {
+		$.get('request.php?action=overview&me=' + $me.val(), function(inputs) {
+			$('#timetracker form').append(inputs).submit();
+		});
 	});
 });

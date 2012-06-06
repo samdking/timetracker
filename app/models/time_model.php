@@ -30,4 +30,9 @@ class Time_model extends Model
 		return 1000 * ($this->secs_paused + $paused_duration);
 	}
 
+	function client()
+	{
+		return Model::get('client')->find($this->client_id);
+	}
+
 }

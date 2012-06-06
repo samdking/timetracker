@@ -1,12 +1,13 @@
 <?php
 	include 'system/init.php';
-	$time = Model::get('time')->filter(array('finished'=>0))->order('paused ASC')->one();
+	$me = $_GET['me'];
+	$time = Model::get('time')->filter(array('user_id'=>$me, 'finished'=>0))->order('paused ASC')->one();
 	if ($time) {
-		$client = Model::get('client')->find($time->client_id);
+		$client = $time->client();
 		$start_time = strtotime($time->start_time) * 1000;
 		$offset = $time->paused_time();
 	}
-	$active_times = Model::get('time')->filter(array('finished'=>0));
+	$active_times = Model::get('time')->filter(array('finished'=>0, 'user_id'=>$me));
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,18 +28,18 @@
 <body>
 
 	<div id="timetracker">
-
+		<a title="Send to Logger" id="send-to-logger">&raquo;</a>
 		<h1>Bozboz Timetracker</h1>
 		<section class="switcher">
 			<label for="client-list"><strong><?=count($active_times)?></strong> active</label>
 			<select id="client-list">
 <?php foreach($active_times as $t): ?>
-				<option value="<?=$t->id?>"<?=$t->id == $time->id? ' selected' : ''?>><?=Model::get('client')->find($t->client_id)->name?></option>
+				<option value="<?=$t->id?>"<?=$t->id == $time->id? ' selected' : ''?>><?=$t->client()->name?></option>
 <?php endforeach ?>
 				<option value=""> - New</option>
 			</select>
 		</section>
-		<form>
+		<form method="post" action="http://boztime.codehorse.co.uk/log/">
 			<span id="time" class="inactive">0:00</span>
 			<fieldset>
 				<input name="value" autocomplete="off" id="client" type="text">
@@ -49,6 +50,7 @@
 				<input type="button" id="finish" class="btn" value="Finish">
 				<input type="button" id="pause" class="btn" value="Pause">
 				<input type="button" id="log" class="btn" value="Log">
+				<input type="hidden" id="me" value="<?=$me?>">
 			</fieldset>
 		</form>
 

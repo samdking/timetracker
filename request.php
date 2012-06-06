@@ -27,7 +27,7 @@ switch($action)
 		break;
 		
 	case 'start':
-		$time = Model::get('client')->first_or_create(array('name'=>$_POST['client']))->start_timing();
+		$time = Model::get('client')->first_or_create(array('name'=>$_POST['client']))->start_timing($_GET['me']);
 		echo $time->id;
 		break;
 
@@ -46,5 +46,11 @@ switch($action)
 
 	case 'log':
 		$time->update(array('log_message' => $_POST['comment']));
+		break;
+
+	case 'overview':
+		$me = $_GET['me'];
+		$times = Model::get('time')->filter(array('user_id'=>$me, 'finished'=>1, 'start_time'=>new GreaterThan(date('Y-m-d'))));
+		include 'app/views/overview.php';
 		break;
 }

@@ -27,7 +27,7 @@ switch($action)
 		break;
 		
 	case 'start':
-		$time = Model::get('client')->first_or_create(array('name'=>$_POST['client']))->start_timing($_GET['me']);
+		$time = Model::get('client')->first_or_create(array('name'=>$_POST['client']))->start_timing($_POST['me']);
 		echo $time->id;
 		break;
 

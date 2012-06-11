@@ -11,7 +11,7 @@ switch($action)
 	case 'query':
 		if (empty($_GET['query']))
 			return;
-		$clients = Model::get('client')->filter(array('name'=>new Contains($_GET['query'])))->values('name');
+		$clients = Model::get('client')->filter(array('name'=>new Contains($_GET['query'])))->limit(10)->values('name');
 		if (!empty($clients))
 			echo ('<ul><li>' . implode('</li><li>', $clients) . '</li></ul>');
 		break;

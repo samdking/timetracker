@@ -172,11 +172,13 @@ $(function() {
 		},
 		'keydown': function(e) {
 			if (e.which == 9 || e.which == 13) {
-				if ($suggestions.find('li').length == 1) {
-					$(this).val($suggestions.find('li').html()).addClass('match');
+				if (this.value != '') {
+					if ($suggestions.find('li').length == 1)
+						$(this).val($suggestions.find('li').html()).addClass('match');
+					$start.show();
+					$suggestions.hide();
 				}
-				$start.show();
-				$suggestions.hide();
+				e.preventDefault();
 			}
 		},
 		'blur': function(e) {

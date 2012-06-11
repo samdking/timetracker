@@ -53,4 +53,9 @@ switch($action)
 		$times = Model::get('time')->filter(array('user_id'=>$me, 'finished'=>1, 'start_time'=>new GreaterThan(date('Y-m-d'))));
 		include 'app/views/overview.php';
 		break;
+
+	case 'update_clients':
+		$list = json_decode(str_replace('uid', 'id', file_get_contents('http://boztime.codehorse.co.uk/log/api?clients')), true);
+		Model::get('client')->bulk_create($list);
+		break;
 }

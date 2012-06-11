@@ -9,11 +9,8 @@ class Client_model extends Model
 		return Model::get('time')->create(array('client_id'=>$this->id, 'start_time'=>new Now, 'user_id'=>$user_id));
 	}
 
-	function create($props)
+	function before_write()
 	{
-		$props['created'] = new Now;
-		$obj = parent::create($props);
-		unset($obj->properties['created']);
-		return $obj;
+		$this->created = new Now;
 	}
 }

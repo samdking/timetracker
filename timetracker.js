@@ -30,10 +30,10 @@ function time_format(date)
 $.fn.startTimer = function() {
 	var obj = $(this);
 	timer = window.setInterval(function() {
-		obj.html(check_time)
+		obj.html(check_time);
 	}, 30000);
 	return this;
-}
+};
 
 $(function() {
 	
@@ -61,18 +61,18 @@ $(function() {
 		start_time = date.getTime() + offset;
 		$start_time.html(time_format(date));
 		$time.removeClass('inactive').addClass('paused').html(check_time());
-	}
+	};
 
 	start = function() {
 		$time.removeClass('paused');
 		$pause.val('Pause');
 		$time.startTimer();
-	}
+	};
 
 	pause = function() {
 		$pause.val('Resume');
 		$time.addClass('paused');
-	}
+	};
 
 	$start.on('click', function() {
 		if ($client.val() === '') {

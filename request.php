@@ -58,4 +58,9 @@ switch($action)
 		$list = json_decode(str_replace('uid', 'id', file_get_contents('http://boztime.codehorse.co.uk/log/api?clients')), true);
 		Model::get('client')->bulk_clear()->bulk_create($list);
 		break;
+
+	case 'update_users':
+		$list = json_decode(str_replace('uid', 'id', file_get_contents('http://boztime.codehorse.co.uk/log/api?users')), true);
+		Model::get('user')->bulk_clear()->bulk_create($list);
+		break;
 }

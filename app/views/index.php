@@ -5,14 +5,14 @@
 	<script src="timetracker.js"></script>
 	<link rel="stylesheet" href="timetracker.css">
 	<title>Bozboz Timetracker</title>
-<?php if ($time): ?>
+<?php /*if ($time): */?>
 	<script>
 	$(function() {
-		init(<?=$time->id?>, '<?=$client->name?>', new Date(<?=$start_time?>), <?=$offset?>);
-		<?=$time->paused? 'pause()' : 'start()'?>;
+		init();
+		<?/*=$time->paused? 'pause()' : 'start()'*/?>;
 	});
 	</script>
-<?php endif ?>
+<?php /* endif */?>
 </head>
 <body>
 
@@ -20,11 +20,11 @@
 		<a title="Send to Logger" id="send-to-logger">&raquo;</a>
 		<h1>Bozboz Timetracker</h1>
 		<section class="switcher">
-			<label for="client-list"><strong><?=count($active_times)?></strong> active</label>
+			<label for="client-list"><strong>0</strong> active</label>
 			<select id="client-list">
-<?php foreach($active_times as $t): ?>
+<?php /*foreach($active_times as $t): ?>
 				<option value="<?=$t->id?>"<?=$t->id == $time->id? ' selected' : ''?>><?=$t->client()->name?></option>
-<?php endforeach ?>
+<?php endforeach*/ ?>
 				<option value=""> - New</option>
 			</select>
 		</section>

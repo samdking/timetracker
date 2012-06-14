@@ -3,8 +3,6 @@
 include 'system/init.php';
 
 $action = isset($_GET['action'])? $_GET['action'] : 'query';
-if (isset($_GET['time_id']))
-	$time = Model::get('time')->find($_GET['time_id']);
 
 switch($action)
 {
@@ -16,40 +14,21 @@ switch($action)
 			echo ('<ul><li>' . implode('</li><li>', $clients) . '</li></ul>');
 		break;
 
-	case 'revisit':
-
-		$client = Model::get('client')->find($time->client_id);
-		echo json_encode(array(
-			'client'=>$client->name, 
-			'start_time'=>strtotime($time->start_time)*1000, 
-			'offset'=>$time->paused_time()
-		));
-		break;
-		
-	case 'start':
-		$time = Model::get('client')->first_or_create(array('name'=>$_POST['client']))->start_timing($_POST['me']);
-		echo $time->id;
-		break;
-
-	case 'pause':
-		$time->pause();
-		break;
-
-	case 'resume':
-		$time->resume();
-		echo strtotime($time->start_time)*1000 + $time->paused_time();
-		break;
-
 	case 'finish':
-		$time->stop();
+		$client = Model::get('client')->first_or_create(array('name'=>$_POST['client']));
+		Model::get('time')->create(array(
+			'total_mins' => $_POST['total'],
+			'user_id' => $_SESSION['user_id'],
+			'client_id' => $client->id
+		));
 		break;
 
 	case 'log':
-		$time->update(array('log_message' => $_POST['comment']));
+		Model::get('time')->last(array('user_id'=>$_SESSION['user_id']))->update(array('log_message'=>$_POST['comment']));
 		break;
 
 	case 'overview':
-		$me = $_GET['me'];
+		$me = $_SESSION['me'];
 		$times = Model::get('time')->filter(array('user_id'=>$me, 'finished'=>1, 'start_time'=>new GreaterThan(date('Y-m-d'))));
 		include 'app/views/overview.php';
 		break;

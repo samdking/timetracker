@@ -1,14 +1,16 @@
 
 var timer,
-    start_time,
-    start,
+    times,
+    time_id,
     init,
+    start,
     pause,
-    time_id;
+    loadit,
+    save;
 
 function check_time()
 {
-	var mins = mins_passed(start_time),
+	var mins = mins_passed(times[time_id].start_time),
 	    hours = Math.floor(mins / 60),
 	    mins = mins%60;
 	return hours + ':' + (mins < 10? '0' : '') + mins;
@@ -20,11 +22,12 @@ function mins_passed(since)
 	return Math.floor(time / 1000 / 60);
 }
 
-function time_format(date)
+function time_format()
 {
+	var date = new Date(times[time_id].start_time);
 	var hrs = date.getHours();
 	var mns = date.getMinutes();
-	return (hrs > 12? hrs - 12 : hrs) + ':' + (mns < 10? '0' + mns : mns) + ' ' + (hrs >= 12? 'PM' : 'AM');
+	return (hrs > 12? hrs - 12 : (hrs == 0? 12 : hrs)) + ':' + (mns < 10? '0' + mns : mns) + ' ' + (hrs >= 12? 'PM' : 'AM');
 }
 
 $.fn.startTimer = function() {
@@ -34,6 +37,12 @@ $.fn.startTimer = function() {
 	}, 30000);
 	return this;
 };
+
+$.fn.stopTimer = function() {
+	var obj = $(this);
+	window.clearInterval(timer);
+	timer = null;
+}
 
 $(function() {
 	
@@ -51,38 +60,63 @@ $(function() {
 	    $sendtologger = $('#send-to-logger'),
 	    $me = $('#me');
 
-	init = function(id, client_name, date, offset) {
-		time_id = id;
-		$('.switcher').slideDown().find('strong').html($('#client-list option').length-1);
-		$pause.show();
+	init = function() {
+		times = localStorage.times? JSON.parse(localStorage.times) : [];
 		$start.hide();
-		$finish.show();
-		$client.val(client_name).addClass('active').attr('disabled', true);
-		start_time = date.getTime() + offset;
-		$start_time.html(time_format(date));
-		$time.removeClass('inactive').addClass('paused').html(check_time());
+		if (times.length) {
+			time_id = 0;
+			for (time in times) {
+				if (!times[time].paused)
+					time_id = time;
+				$clientlist.prepend('<option value="'+time+'">' + times[time].client_name + '</option>');
+			}
+			if (times[time_id].paused) {
+				var d = new Date().getTime();
+				times[time_id].start_time += d - times[time_id].paused;
+				times[time_id].paused = d;
+			}
+			loadit();
+		}
 	};
 
+	loadit = function() {
+		$('.switcher').slideDown();
+		$finish.show();
+		$client.val(times[time_id].client_name).addClass('active').attr('disabled', true);
+		$('.switcher strong').html(times.length);
+		$start_time.html(time_format());
+		$time.removeClass('inactive').html(check_time());
+		$clientlist.val(time_id);
+		times[time_id].paused? pause() : start();
+	}
+
 	start = function() {
-		$time.removeClass('paused');
-		$pause.val('Pause');
-		$time.startTimer();
+		$start.hide();
+		$finish.show();
+		$pause.show().val('Pause');
+		$time.removeClass('inactive').startTimer();
 	};
 
 	pause = function() {
+		$pause.show();
 		$pause.val('Resume');
 		$time.addClass('paused');
 	};
+
+	save = function() {
+		localStorage.times = JSON.stringify(times);
+	}
 
 	$start.on('click', function() {
 		if ($client.val() === '') {
 			$client.focus();
 		} else {
-			$.post('request.php?action=start', {'me':$me.val(),'client':$client.val()}, function(id) {
-				$clientlist.prepend('<option value="'+id+'">' + $client.val() + '</option>').val(id);
-				init(id, $client.val(), new Date(), 0);
-				start();
-			});
+			times[time_id] = { 'start_time': new Date().getTime(), 'client_name': $client.val() };
+			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>').val(time_id);
+			$client.addClass('active').attr('disabled', true);
+			$('.switcher').slideDown().find('strong').html(time_id);
+			save();
+			start();
 		}
 		return false;
 	});
@@ -91,39 +125,40 @@ $(function() {
 		if (timer)
 			$pause.trigger('click');
 		var new_id = this.value;
-		if (new_id == false) {
+		if (new_id === '') {
 			$time.html('0:00').addClass('inactive').removeClass('paused');
 			$client.removeClass('active').attr('disabled', false).val('').focus();
 			$start_time.html('');
 			$pause.hide();
 			$finish.hide();
 		} else {
-			$.get('request.php?time_id=' + new_id + '&action=revisit', function(json) {
-				json = $.parseJSON(json);
-				init(new_id, json.client, new Date(json.start_time), json.offset);
-			});
+			time_id = new_id;
+			loadit();
 		}
 	});
 
 	$finish.on('click', function() {
-		$.get('request.php?time_id=' + time_id + '&action=finish');
+		obj = times[time_id];
+		$.post('request.php?action=finish', {total: mins_passed(obj.start_time), client: obj.client_name});
 		$finish.hide();
 		$pause.hide();
 		$log.show();
 		$start_time.html('');
-		window.clearInterval(timer);
-		timer = null;
+		$time.stopTimer();
 		$comment.show().focus();
 		$clientlist.find('option[value='+time_id+']').remove();
-		$('.switcher strong').html($('#client-list option').length-1);
+		times.splice(time_id, 1);
+		time_id = null;
+		$('.switcher strong').html(times.length);
+		save();
 	});
 
 	$log.on('click', function() {
-		$.post('request.php?time_id=' + time_id + '&action=log', {comment:$comment.val()});
+		$.post('request.php?action=log', {comment:$comment.val()});
 		$comment.val('').hide();
 		$log.hide();
 		$start.show();
-		$client.removeClass('active').attr('disabled', false).focus();
+		$client.removeClass('active').attr('disabled', false).val('').focus();
 		$time.addClass('inactive').removeClass('paused');
 		if ($('#client-list option').length > 1) {
 			$('#client-list option:first').change();
@@ -136,17 +171,17 @@ $(function() {
 
 	$pause.on('click', function() {
 		if (!timer) {
-			$.get('request.php?time_id=' + time_id + '&action=resume', function(adjusted_start_time) {
-				start_time = adjusted_start_time;
-				$time.removeClass('paused').startTimer();
-				$pause.val('Pause');
-			});
+			times[time_id].start_time += new Date().getTime() - times[time_id].paused;
+			times[time_id].paused = null;
+			$time.removeClass('paused').startTimer();
+			$pause.val('Pause');
 		} else {
-			$.get('request.php?time_id=' + time_id + '&action=pause');
-			window.clearInterval(timer);
-			timer = null;
+			if (!times[time_id].paused)
+				times[time_id].paused = new Date().getTime();
+			$time.stopTimer();
 			pause();
 		}
+		save();
 	});
 
 	$suggestions.on('click', 'li', function() {
@@ -193,4 +228,5 @@ $(function() {
 			$('#timetracker form').append(inputs).submit();
 		});
 	});
+
 });

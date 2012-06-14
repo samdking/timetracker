@@ -14,12 +14,12 @@
 		#timetracker #client:focus,
 		#timetracker #comment:focus { box-shadow: 0 0 8px orange; outline: none; }
 		#timetracker input.match { font-weight: bold}
-		#timetracker #start-time { display: block; color: rgba(0, 0, 0, 0.6); font-family: Monaco, "Courier New"; font-size: 12px; line-height: 14px; padding: 10px; position: absolute; right: 0; top: 10px; }
+		#timetracker #start-time { display: block; color: rgba(0, 0, 0, 0.6); font-family: Monaco, "Ubuntu mono", "Courier New"; font-size: 12px; line-height: 14px; padding: 10px; position: absolute; right: 0; top: 10px; }
 		#timetracker #suggestions { display: none; position: absolute; background: white; border: 1px solid #CCC; top: 44px }
 			#timetracker #suggestions li { padding: 7px; font-size: 12px; } 
 			#timetracker #suggestions .error { display: block; padding: 7px; text-align: center; font-weight: bold; font-size: 11px; color: #C00; }
 		#timetracker #client.active { border-color: #AAA; background: #DDD; font-weight: bold;}
-		#timetracker #time { background: #666; line-height: 1.2; padding: 0 20px; border-radius: 20px; display: block; width: 100%; text-align: center; color: #FFF; font-family: Monaco, "courier new"; font-size: 90px;}
+		#timetracker #time { background: #666; line-height: 1.2; padding: 0 20px; border-radius: 20px; display: block; width: 100%; text-align: center; color: #FFF; font-family: Monaco, "Ubuntu mono", "courier new"; font-size: 90px;}
 		#timetracker #time.inactive { color: #BBB; background-color: #888; }
 		#timetracker #time.paused { color: #444;}
 		#timetracker #start { float: left; display: none; }

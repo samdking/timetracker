@@ -1,5 +1,9 @@
 <?php
 
 include 'system/init.php';
-$_SESSION['user_id'] = $_GET['me'];
-include 'app/views/index.php';
+if (isset($_SESSION['user_id']))
+	include 'app/views/index.php';
+else {
+	$users = Model::get('user')->all();
+	include 'app/views/login.php';
+}

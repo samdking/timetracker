@@ -6,6 +6,10 @@ $action = isset($_GET['action'])? $_GET['action'] : 'query';
 
 switch($action)
 {
+	case 'login':
+		$_SESSION['user_id'] = $_GET['user_id'];
+		break;
+
 	case 'query':
 		if (empty($_GET['query']))
 			return;

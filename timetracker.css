@@ -46,3 +46,9 @@
 		/* Thanks to Twitter Bootstrap for this */
 		#timetracker .btn { background: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6) repeat-x #F5F5F5; border: 1px solid; border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05); color: #333333; cursor: pointer; margin-bottom: 0; text-align: center; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); vertical-align: middle; font-size: 11px; line-height: 16px; padding: 5px 9px; border-radius: 4px;}
 		#timetracker .btn:hover { -moz-transition: background-position 0.1s linear 0s; background-color: #E6E6E6; background-position: 0 -15px; color: #333333; text-decoration: none; }
+
+
+/* Login screen */
+
+#timetracker.login { background-image: url('race-track-icon.png'); background-repeat: no-repeat; background-position: right 6px;}
+.login form { background: rgba(230, 230, 230, 0.7) }

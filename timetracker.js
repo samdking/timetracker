@@ -231,4 +231,10 @@ $(function() {
 		});
 	});
 
+	$('#user').on('change', function() {
+		$.get('request.php?action=login&user_id=' + this.value, function() {
+			window.location = window.location;
+		});
+	});
+
 });

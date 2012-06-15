@@ -111,6 +111,7 @@ $(function() {
 		if ($client.val() === '') {
 			$client.focus();
 		} else {
+			time_id = times.length;
 			times[time_id] = { 'start_time': new Date().getTime(), 'client_name': $client.val() };
 			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>').val(time_id);
 			$client.addClass('active').attr('disabled', true);

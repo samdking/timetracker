@@ -5,14 +5,11 @@
 	<script src="timetracker.js"></script>
 	<link rel="stylesheet" href="timetracker.css">
 	<title>Bozboz Timetracker</title>
-<?php /*if ($time): */?>
 	<script>
 	$(function() {
 		init();
-		<?/*=$time->paused? 'pause()' : 'start()'*/?>;
 	});
 	</script>
-<?php /* endif */?>
 </head>
 <body>
 
@@ -22,9 +19,6 @@
 		<section class="switcher">
 			<label for="client-list"><strong>0</strong> active</label>
 			<select id="client-list">
-<?php /*foreach($active_times as $t): ?>
-				<option value="<?=$t->id?>"<?=$t->id == $time->id? ' selected' : ''?>><?=$t->client()->name?></option>
-<?php endforeach*/ ?>
 				<option value=""> - New</option>
 			</select>
 		</section>
@@ -39,7 +33,6 @@
 				<input type="button" id="finish" class="btn" value="Finish">
 				<input type="button" id="pause" class="btn" value="Pause">
 				<input type="button" id="log" class="btn" value="Log">
-				<input type="hidden" id="me" value="<?=$me?>">
 			</fieldset>
 		</form>
 

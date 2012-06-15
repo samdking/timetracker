@@ -116,6 +116,7 @@ $(function() {
 			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>').val(time_id);
 			$client.addClass('active').attr('disabled', true);
 			$('.switcher').slideDown().find('strong').html(time_id);
+			$start_time.html(time_format());
 			save();
 			start();
 		}

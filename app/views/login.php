@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="jquery.min.js"></script>
-	<script src="timetracker.js"></script>
-	<link rel="stylesheet" href="timetracker.css">
+	<script src="app/assets/js/jquery.min.js"></script>
+	<script src="app/assets/js/timetracker.js"></script>
+	<link rel="stylesheet" href="app/assets/css/timetracker.css">
 	<title>Bozboz Timetracker</title>
 	<script>
 	$(function() {

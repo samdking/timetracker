@@ -23,7 +23,8 @@ switch($action)
 		Model::get('time')->create(array(
 			'total_mins' => $_POST['total'],
 			'user_id' => $_SESSION['user_id'],
-			'client_id' => $client->id
+			'client_id' => $client->id,
+			'date' => date('Y-m-d')
 		));
 		break;
 
@@ -32,9 +33,10 @@ switch($action)
 		break;
 
 	case 'overview':
-		$me = $_SESSION['me'];
-		$times = Model::get('time')->filter(array('user_id'=>$me, 'finished'=>1, 'start_time'=>new GreaterThan(date('Y-m-d'))));
+		$me = $_SESSION['user_id'];
+		$times = Model::get('time')->filter(array('user_id'=>$me, 'date'=>date('y-m-d'), 'logged'=>0));
 		include 'app/views/overview.php';
+		$times->update(array('logged'=>1));
 		break;
 
 	case 'update_clients':
@@ -45,5 +47,8 @@ switch($action)
 	case 'update_users':
 		$list = json_decode(str_replace('uid', 'id', str_replace('userid', 'name', file_get_contents('http://boztime.codehorse.co.uk/log/api.php?users'))), true);
 		Model::get('user')->bulk_clear()->bulk_create($list);
+		break;
+
+	case 'test':
 		break;
 }

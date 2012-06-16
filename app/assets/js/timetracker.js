@@ -5,6 +5,7 @@ var timer,
     init,
     start,
     pause,
+    resume,
     loadit,
     save;
 
@@ -56,13 +57,10 @@ $(function() {
 	    $log = $('#log'),
 	    $comment = $('#comment'),
 	    $time = $('#time'),
-	    $send = $('#send');
-	    $sendtologger = $('#send-to-logger'),
-	    $me = $('#me');
+	    $sendtologger = $('#send-to-logger');
 
 	init = function() {
 		times = localStorage.times? JSON.parse(localStorage.times) : [];
-		$start.hide();
 		if (times.length) {
 			time_id = 0;
 			for (time in times) {
@@ -70,11 +68,8 @@ $(function() {
 					time_id = time;
 				$clientlist.prepend('<option value="'+time+'">' + times[time].client_name + '</option>');
 			}
-			if (times[time_id].paused) {
-				var d = new Date().getTime();
-				times[time_id].start_time += d - times[time_id].paused;
-				times[time_id].paused = d;
-			}
+			if (times[time_id].paused)
+				times[time_id].start_time += new Date().getTime() - times[time_id].paused;
 			loadit();
 		}
 	};
@@ -100,11 +95,19 @@ $(function() {
 	pause = function() {
 		$pause.show();
 		$pause.val('Resume');
-		$time.addClass('paused');
+		times[time_id].paused = new Date().getTime();
+		$time.addClass('paused').stopTimer();
 	};
 
 	save = function() {
 		localStorage.times = JSON.stringify(times);
+	};
+
+	resume = function() {
+		times[time_id].start_time += new Date().getTime() - times[time_id].paused;
+		times[time_id].paused = null;
+		$time.removeClass('paused');
+		start();
 	}
 
 	$start.on('click', function() {
@@ -113,30 +116,28 @@ $(function() {
 		} else {
 			time_id = times.length;
 			times[time_id] = { 'start_time': new Date().getTime(), 'client_name': $client.val() };
-			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>').val(time_id);
-			$client.addClass('active').attr('disabled', true);
-			$('.switcher').slideDown().find('strong').html(time_id);
-			$start_time.html(time_format());
+			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>')
+			loadit();
 			save();
-			start();
 		}
-		return false;
 	});
 
 	$clientlist.on('change', function() {
-		if (timer)
-			$pause.trigger('click');
-		var new_id = this.value;
-		if (new_id === '') {
+		if (time_id)
+			pause();
+		if (this.value === '') {
+			time_id = null;
 			$time.html('0:00').addClass('inactive').removeClass('paused');
 			$client.removeClass('active').attr('disabled', false).val('').focus();
 			$start_time.html('');
 			$pause.hide();
 			$finish.hide();
 		} else {
-			time_id = new_id;
+			time_id = this.value;
 			loadit();
+			resume();
 		}
+		save();
 	});
 
 	$finish.on('click', function() {
@@ -159,7 +160,6 @@ $(function() {
 		$.post('request.php?action=log', {comment:$comment.val()});
 		$comment.val('').hide();
 		$log.hide();
-		$start.show();
 		$client.removeClass('active').attr('disabled', false).val('').focus();
 		$time.addClass('inactive').removeClass('paused');
 		if ($('#client-list option').length > 1) {
@@ -167,22 +167,11 @@ $(function() {
 			$pause.focus();
 		} else {
 			$('.switcher').slideUp();
-			$send.show();
 		}
 	});
 
 	$pause.on('click', function() {
-		if (!timer) {
-			times[time_id].start_time += new Date().getTime() - times[time_id].paused;
-			times[time_id].paused = null;
-			$time.removeClass('paused').startTimer();
-			$pause.val('Pause');
-		} else {
-			if (!times[time_id].paused)
-				times[time_id].paused = new Date().getTime();
-			$time.stopTimer();
-			pause();
-		}
+		timer? pause() : resume();
 		save();
 	});
 
@@ -226,7 +215,7 @@ $(function() {
 	});
 
 	$sendtologger.on('click', function() {
-		$.get('request.php?action=overview&me=' + $me.val(), function(inputs) {
+		$.get('request.php?action=overview', function(inputs) {
 			$('#timetracker form').append(inputs).submit();
 		});
 	});

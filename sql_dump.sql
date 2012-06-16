@@ -9,17 +9,17 @@ CREATE TABLE `clients` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
 DROP TABLE IF EXISTS `times`;
 
 CREATE TABLE `times` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `client_id` int(11) DEFAULT NULL,L,
+  `client_id` int(11) DEFAULT NULL,
   `log_message` text,
   `total_mins` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `logged` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 DROP TABLE IF EXISTS `users`;

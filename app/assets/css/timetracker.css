@@ -51,4 +51,5 @@
 /* Login screen */
 
 #timetracker.login { background-image: url('../images/race-track-icon.png'); background-repeat: no-repeat; background-position: right 6px;}
-.login form { background: rgba(230, 230, 230, 0.7) }
+	.login form { background: rgba(230, 230, 230, 0.7) }
+		.login form select { padding: 2px; }

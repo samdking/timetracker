@@ -18,6 +18,7 @@
 		<form>
 			<fieldset>
 				<select id="user">
+					<option>who are you?</option>
 <?php foreach($users as $u): ?>
 					<option value="<?=$u->id?>"><?=$u->name?></option>
 <?php endforeach ?>

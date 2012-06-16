@@ -49,6 +49,7 @@ switch($action)
 		Model::get('user')->bulk_clear()->bulk_create($list);
 		break;
 
-	case 'test':
-		break;
+	case 'logout':
+		session_destroy();
+		redirect('../timetracker/');
 }

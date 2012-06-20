@@ -33,6 +33,7 @@ function time_format()
 
 $.fn.startTimer = function() {
 	var obj = $(this);
+	obj.html(check_time());
 	timer = window.setInterval(function() {
 		obj.html(check_time);
 	}, 30000);
@@ -63,14 +64,17 @@ $(function() {
 		times = localStorage.times? JSON.parse(localStorage.times) : [];
 		if (times.length) {
 			time_id = 0;
-			for (time in times) {
+			for (var time in times) {
 				if (!times[time].paused)
 					time_id = time;
+				else
+					times[time].start_time += new Date().getTime() - times[time].paused;
 				$clientlist.prepend('<option value="'+time+'">' + times[time].client_name + '</option>');
 			}
-			if (times[time_id].paused)
-				times[time_id].start_time += new Date().getTime() - times[time_id].paused;
+			save();
 			loadit();
+			$time.html(check_time());
+			if (times[time_id].paused) pause(); else start();
 		}
 	};
 
@@ -80,9 +84,8 @@ $(function() {
 		$client.val(times[time_id].client_name).addClass('active').attr('disabled', true);
 		$('.switcher strong').html(times.length);
 		$start_time.html(time_format());
-		$time.removeClass('inactive').html(check_time());
+		$time.removeClass('inactive');
 		$clientlist.val(time_id);
-		times[time_id].paused? pause() : start();
 	}
 
 	start = function() {
@@ -118,12 +121,13 @@ $(function() {
 			times[time_id] = { 'start_time': new Date().getTime(), 'client_name': $client.val() };
 			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>')
 			loadit();
+			start();
 			save();
 		}
 	});
 
 	$clientlist.on('change', function() {
-		if (time_id)
+		if (timer)
 			pause();
 		if (this.value === '') {
 			time_id = null;

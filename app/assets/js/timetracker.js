@@ -28,23 +28,22 @@ function time_format()
 	var date = new Date(times[time_id].start_time);
 	var hrs = date.getHours();
 	var mns = date.getMinutes();
-	return (hrs > 12? hrs - 12 : (hrs == 0? 12 : hrs)) + ':' + (mns < 10? '0' + mns : mns) + ' ' + (hrs >= 12? 'PM' : 'AM');
+	return (hrs > 12? hrs - 12 : (hrs === 0? 12 : hrs)) + ':' + (mns < 10? '0' + mns : mns) + ' ' + (hrs >= 12? 'PM' : 'AM');
 }
 
 $.fn.startTimer = function() {
 	var obj = $(this);
 	obj.html(check_time());
 	timer = window.setInterval(function() {
-		obj.html(check_time);
+		obj.html(check_time());
 	}, 30000);
 	return this;
 };
 
 $.fn.stopTimer = function() {
-	var obj = $(this);
 	window.clearInterval(timer);
 	timer = null;
-}
+};
 
 $(function() {
 	
@@ -86,7 +85,7 @@ $(function() {
 		$start_time.html(time_format());
 		$time.removeClass('inactive');
 		$clientlist.val(time_id);
-	}
+	};
 
 	start = function() {
 		$start.hide();
@@ -111,7 +110,7 @@ $(function() {
 		times[time_id].paused = null;
 		$time.removeClass('paused');
 		start();
-	}
+	};
 
 	$start.on('click', function() {
 		if ($client.val() === '') {
@@ -119,7 +118,7 @@ $(function() {
 		} else {
 			time_id = times.length;
 			times[time_id] = { 'start_time': new Date().getTime(), 'client_name': $client.val() };
-			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>')
+			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>');
 			loadit();
 			start();
 			save();
@@ -175,7 +174,7 @@ $(function() {
 	});
 
 	$pause.on('click', function() {
-		timer? pause() : resume();
+		if (timer) pause(); else resume();
 		save();
 	});
 
@@ -202,7 +201,7 @@ $(function() {
 		},
 		'keydown': function(e) {
 			if (e.which == 9 || e.which == 13) {
-				if (this.value != '') {
+				if (this.value !== '') {
 					if ($suggestions.find('li').length == 1)
 						$(this).val($suggestions.find('li').html()).addClass('match');
 					$start.show();

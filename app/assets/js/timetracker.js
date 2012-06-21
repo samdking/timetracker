@@ -103,8 +103,7 @@ $(function() {
 	};
 
 	pause = function() {
-		$pause.show();
-		$pause.val('Resume');
+		$pause.show().val('Resume');
 		times[time_id].paused = new Date().getTime();
 		console.log(times[time_id].client_name + ' paused.');
 		$time.addClass('paused').stopTimer();
@@ -129,7 +128,7 @@ $(function() {
 			$client.focus();
 		} else {
 			time_id = times.length;
-			times[time_id] = { 'start_time': new Date().getTime(), 'client_name': $client.val() };
+			times[time_id] = { 'client_name': $client.val(), 'start_time': new Date().getTime() };
 			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>');
 			loadit();
 			start();

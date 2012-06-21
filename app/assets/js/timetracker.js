@@ -34,7 +34,6 @@ function mins_passed(since)
 
 $.fn.startTimer = function() {
 	var obj = $(this);
-	obj.html(check_time());
 	timer = window.setInterval(function() {
 		obj.html(check_time());
 	}, 30000);
@@ -121,7 +120,7 @@ $(function() {
 		var mins_paused = mins_passed(times[time_id].paused);
 		console.log(times[time_id].client_name + ' paused for ' + mins_paused + ' min' + (mins_paused == 1? '' : 's') + '; resuming.');
 		times[time_id].paused = null;
-		$time.removeClass('paused');
+		$time.removeClass('paused').html(check_time());
 		start();
 	};
 

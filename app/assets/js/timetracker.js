@@ -66,11 +66,15 @@ $(function() {
 			for (var time in times)
 				if (!times[time].paused)
 					time_id = time;
-			save();
 			draw_list();
 			loadit();
+			if (times[time_id].paused) {
+				times[time_id].start_time += new Date().getTime() - times[time_id].paused;
+				pause();
+			} else 
+				start();
 			$time.html(check_time());
-			if (times[time_id].paused) pause(); else start();
+			save();
 		}
 	};
 

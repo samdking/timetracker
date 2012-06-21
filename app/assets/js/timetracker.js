@@ -175,7 +175,7 @@ $(function() {
 		$comment.val('').hide();
 		$log.hide();
 		$client.removeClass('active').attr('disabled', false).val('').focus();
-		$time.addClass('inactive').removeClass('paused');
+		$time.addClass('inactive').removeClass('paused').html('0:00');
 		draw_list();
 		if (times.length > 0)
 			$('#client-list option:first').change();

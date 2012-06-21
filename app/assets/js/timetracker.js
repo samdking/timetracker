@@ -23,13 +23,13 @@ function mins_passed(since)
 	return Math.floor(time / 1000 / 60);
 }
 
-function time_format()
+/*function time_format()
 {
 	var date = new Date(times[time_id].start_time);
 	var hrs = date.getHours();
 	var mns = date.getMinutes();
 	return (hrs > 12? hrs - 12 : (hrs === 0? 12 : hrs)) + ':' + (mns < 10? '0' + mns : mns) + ' ' + (hrs >= 12? 'PM' : 'AM');
-}
+}*/
 
 $.fn.startTimer = function() {
 	var obj = $(this);
@@ -82,7 +82,6 @@ $(function() {
 		$finish.show();
 		$client.val(times[time_id].client_name).addClass('active').attr('disabled', true);
 		$('.switcher strong').html(times.length);
-		$start_time.html(time_format());
 		$time.removeClass('inactive');
 		$clientlist.val(time_id);
 	};
@@ -132,7 +131,6 @@ $(function() {
 			time_id = null;
 			$time.html('0:00').addClass('inactive').removeClass('paused');
 			$client.removeClass('active').attr('disabled', false).val('').focus();
-			$start_time.html('');
 			$pause.hide();
 			$finish.hide();
 		} else {
@@ -149,7 +147,6 @@ $(function() {
 		$finish.hide();
 		$pause.hide();
 		$log.show();
-		$start_time.html('');
 		$time.stopTimer();
 		$comment.show().focus();
 		$clientlist.find('option[value='+time_id+']').remove();

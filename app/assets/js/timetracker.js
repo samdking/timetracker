@@ -7,7 +7,8 @@ var timer,
     pause,
     resume,
     loadit,
-    save;
+    save,
+    draw_list;
 
 function check_time()
 {
@@ -63,19 +64,28 @@ $(function() {
 		times = localStorage.times? JSON.parse(localStorage.times) : [];
 		if (times.length) {
 			time_id = 0;
-			for (var time in times) {
+			for (var time in times)
 				if (!times[time].paused)
 					time_id = time;
-				else
-					times[time].start_time += new Date().getTime() - times[time].paused;
-				$clientlist.prepend('<option value="'+time+'">' + times[time].client_name + '</option>');
-			}
 			save();
+			draw_list();
 			loadit();
 			$time.html(check_time());
 			if (times[time_id].paused) pause(); else start();
 		}
 	};
+
+	draw_list = function()
+	{
+		if (times.length == 0) {
+			$('.switcher').slideUp();
+			return false;
+		}
+		$clientlist.html('');
+		for (var time in times)
+			$clientlist.append('<option value="'+time+'">' + times[time].client_name + '</option>');
+		$clientlist.append('<option value=""> - New</option>');
+	}
 
 	loadit = function() {
 		$('.switcher').slideDown();
@@ -154,11 +164,9 @@ $(function() {
 		$log.show();
 		$time.stopTimer();
 		$comment.show().focus();
-		$clientlist.find('option[value='+time_id+']').remove();
 		console.log(obj.client_name + ' finished. Total time: ' + mins_passed(obj.start_time) + ' mins');
 		times.splice(time_id, 1);
 		time_id = null;
-		$('.switcher strong').html(times.length);
 		save();
 	});
 
@@ -168,12 +176,9 @@ $(function() {
 		$log.hide();
 		$client.removeClass('active').attr('disabled', false).val('').focus();
 		$time.addClass('inactive').removeClass('paused');
-		if ($('#client-list option').length > 1) {
+		draw_list();
+		if (times.length > 0)
 			$('#client-list option:first').change();
-			$pause.focus();
-		} else {
-			$('.switcher').slideUp();
-		}
 	});
 
 	$pause.on('click', function() {

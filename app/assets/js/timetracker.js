@@ -97,15 +97,19 @@ $(function() {
 		$pause.show();
 		$pause.val('Resume');
 		times[time_id].paused = new Date().getTime();
+		console.log(times[time_id].client_name + ' paused.');
 		$time.addClass('paused').stopTimer();
 	};
 
 	save = function() {
 		localStorage.times = JSON.stringify(times);
+		console.log('[ Times saved to localStorage ]');
 	};
 
 	resume = function() {
 		times[time_id].start_time += new Date().getTime() - times[time_id].paused;
+		var mins_paused = mins_passed(times[time_id].paused);
+		console.log(times[time_id].client_name + ' paused for ' + mins_paused + ' min' + (mins_paused == 1? '' : 's') + '; resuming.');
 		times[time_id].paused = null;
 		$time.removeClass('paused');
 		start();
@@ -120,6 +124,7 @@ $(function() {
 			$clientlist.prepend('<option value="'+time_id+'">' + $client.val() + '</option>');
 			loadit();
 			start();
+			console.log($client.val() + ' created.');
 			save();
 		}
 	});
@@ -150,6 +155,7 @@ $(function() {
 		$time.stopTimer();
 		$comment.show().focus();
 		$clientlist.find('option[value='+time_id+']').remove();
+		console.log(obj.client_name + ' finished. Total time: ' + mins_passed(obj.start_time) + ' mins');
 		times.splice(time_id, 1);
 		time_id = null;
 		$('.switcher strong').html(times.length);

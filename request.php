@@ -40,12 +40,12 @@ switch($action)
 		break;
 
 	case 'update_clients':
-		$list = json_decode(str_replace('uid', 'id', file_get_contents('http://boztime.codehorse.co.uk/log/api?clients')), true);
+		$list = json_decode(str_replace('uid', 'id', file_get_contents('http://boztime.codehorse.co.uk/log/api.php?api=clients')), true);
 		Model::get('client')->bulk_clear()->bulk_create($list);
 		break;
 
 	case 'update_users':
-		$list = json_decode(str_replace('uid', 'id', str_replace('userid', 'name', file_get_contents('http://boztime.codehorse.co.uk/log/api.php?users'))), true);
+		$list = json_decode(str_replace('uid', 'id', str_replace('userid', 'name', file_get_contents('http://boztime.codehorse.co.uk/log/api.php?api=users'))), true);
 		Model::get('user')->bulk_clear()->bulk_create($list);
 		break;
 

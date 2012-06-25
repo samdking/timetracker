@@ -8,7 +8,10 @@ var timer,
     resume,
     loadit,
     save,
-    draw_list;
+    draw_list,
+    update_minutes,
+    update_users,
+    update_clients;
 
 function check_time()
 {
@@ -123,6 +126,20 @@ $(function() {
 		times[time_id].paused = null;
 		$time.removeClass('paused').html(check_time());
 		start();
+	};
+
+	update_minutes = function(mins) {
+		times[time_id].start_time -= mins*60*1000;
+		$time.html(check_time());
+		save();
+	},
+
+	update_users = function() {
+		$.ajax('request.php?action=update_users');
+	};
+
+	update_clients = function() {
+		$.ajax('request.php?action=update_clients');
 	};
 
 	$start.on('click', function() {

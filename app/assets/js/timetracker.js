@@ -80,15 +80,13 @@ $(function() {
 
 	draw_list = function()
 	{
-		if (times.length == 0) {
-			$('.switcher').slideUp();
-			return false;
-		}
 		$clientlist.html('');
+		if (times.length === 0)
+			$('.switcher').slideUp();
 		for (var time in times)
 			$clientlist.append('<option value="'+time+'">' + times[time].client_name + '</option>');
 		$clientlist.append('<option value=""> - New</option>');
-	}
+	};
 
 	loadit = function() {
 		$('.switcher').slideDown();

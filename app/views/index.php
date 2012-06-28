@@ -10,6 +10,7 @@
 		init();
 	});
 	</script>
+	<link rel="icon" href="app/assets/images/race-track-icon-48.png" />
 </head>
 <body>
 

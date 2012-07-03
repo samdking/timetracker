@@ -185,6 +185,7 @@ $(function() {
 		times.splice(time_id, 1);
 		time_id = null;
 		save();
+		$sendtologger.html($sendtologger.html()*1 + 1).addClass('active');
 	});
 
 	$log.on('click', function() {

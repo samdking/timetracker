@@ -175,7 +175,7 @@ $(function() {
 
 	$finish.on('click', function() {
 		obj = times[time_id];
-		$.post('request.php?action=finish', {total: mins_passed(obj.start_time), client: obj.client_name});
+		$.post('time/new', {total: mins_passed(obj.start_time), client: obj.client_name});
 		$finish.hide();
 		$pause.hide();
 		$log.show();
@@ -188,7 +188,7 @@ $(function() {
 	});
 
 	$log.on('click', function() {
-		$.post('request.php?action=log', {comment:$comment.val()});
+		$.post('time/log', {comment:$comment.val()});
 		$comment.val('').hide();
 		$log.hide();
 		$client.removeClass('active').attr('disabled', false).val('').focus();
@@ -217,7 +217,7 @@ $(function() {
 			if (!this.value)
 				$suggestions.html('');
 			else if (e.which != 13) {
-				$.get('request.php?query=' + this.value, function(data) {
+				$.get('client/query/' + this.value, function(data) {
 					$suggestions.html(data).show();
 				});
 			} else {

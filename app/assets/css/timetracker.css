@@ -31,7 +31,7 @@
 		#timetracker #comment { line-height: 16px; font-size: 14px; display: none; font-size: 12px; border-radius: 0;}
 
 		#timetracker #send-to-logger { color: #FFF; cursor: pointer; float: right; font-size: 12px; line-height: 14px; padding: 4px; margin: 8px; font-weight: bold; text-align: center; border-radius: 20px; width: 22px; background: #CCC;}
-		#send-to-logger .active { background: #C55; }
+		#timetracker #send-to-logger.active { background: #C55; }
 		#timetracker #send { float: right; display: block; }
 		#overview-table { width: 100%; font-size: 12px; border-collapse: collapse}
 			#overview-table th,

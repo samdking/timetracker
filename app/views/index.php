@@ -15,7 +15,7 @@
 <body>
 
 	<div id="timetracker">
-		<a title="Send to Logger" id="send-to-logger"><?=$logged?></a>
+		<a title="Send to Logger" id="send-to-logger"<?=$logged? ' class="active"' : ''?>><?=$logged?></a>
 		<h1>Bozboz Timetracker</h1>
 		<section class="switcher">
 			<label for="client-list"><strong>0</strong> active</label>

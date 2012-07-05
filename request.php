@@ -13,13 +13,13 @@ switch($action)
 	case 'query':
 		if (empty($_GET['query']))
 			return;
-		$clients = Model::get('client')->filter(array('name'=>new Contains($_GET['query'])))->limit(10)->values('name');
+		$clients = Model::get('client')->filter(array('name' => new Contains($_GET['query'])))->limit(10)->values('name');
 		if (!empty($clients))
 			echo ('<ul><li>' . implode('</li><li>', $clients) . '</li></ul>');
 		break;
 
 	case 'finish':
-		$client = Model::get('client')->first_or_create(array('name'=>$_POST['client']));
+		$client = Model::get('client')->filter(array('name'=>$_POST['client']))->first_or_create();
 		Model::get('time')->create(array(
 			'total_mins' => $_POST['total'],
 			'user_id' => $_SESSION['user_id'],
@@ -29,7 +29,7 @@ switch($action)
 		break;
 
 	case 'log':
-		Model::get('time')->last(array('user_id'=>$_SESSION['user_id']))->update(array('log_message'=>$_POST['comment']));
+		Model::get('time')->filter(array('user_id'=>$_SESSION['user_id']))->last()->update(array('log_message'=>$_POST['comment']));
 		break;
 
 	case 'overview':
@@ -52,4 +52,10 @@ switch($action)
 	case 'logout':
 		session_destroy();
 		redirect('../timetracker/');
+
+	case 'test':
+		echo Model::get('Client')->filter(array('name'=>'Mich'))->first_or_create()->name;
+
+	 case 'test2':
+	 	Model::get('time')->filter(array('user_id'=>$_SESSION['user_id']))->last()->update(array('log_message'=>'working'));
 }

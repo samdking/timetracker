@@ -23,7 +23,7 @@
 				<option value=""> - New</option>
 			</select>
 		</section>
-		<form method="post" action="http://boztime.codehorse.co.uk/log/">
+		<form method="post" action="http://boztime.codehorse.co.uk/log/v1">
 			<span id="time" class="inactive">0:00</span>
 			<fieldset>
 				<input name="value" autocomplete="off" id="client" type="text">
